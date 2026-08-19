@@ -49,7 +49,7 @@
 **波次 2 · flows（串行，等波次 1）**
 
 - 无 `domain=`：派 E，按 `modes-flows.md` 写骨架链（可读 api-list 选入口最多的域；若 B 未完成则按 controller 文件数）  
-- 有 `domain=` 且未拍板：主代理（或单子代理）按 `modes-flows.md` 做 propose → **停住**；波次 3/4 可先做互校+entrypoint（不含 deep）  
+- 有 `domain=` 且未拍板：主代理按 `modes-flows.md` 做 propose（已有等待中的候选页则只复述）→ **停住**；波次 3/4 可先做互校+entrypoint（不含 deep）  
 - 有 `feature=`：本轮 full **不做 deep**；summary 提示用户单独再跑 `codex-map mode=flows` deep（避免 full 与细挖抢上下文）
 
 **波次 3 · 主代理互校**

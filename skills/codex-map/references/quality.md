@@ -8,7 +8,7 @@
 - 禁止编造 HTTP 方法、入参、表字段、模块名、状态迁移、调用链下一跳
 - 禁止把其它仓库的业务域、模块名、中间件名单套到当前仓库
 - **四层有则写、无则标「本仓库无」**；未命中的层禁止建页、禁止用其它系统的实例当标题
-- SVG 遵守 `references/diagrams.md`：dark、留白、节点 ≤ 2 行字；模块写「名字 + 一句话职责」
+- SVG 遵守 `references/diagrams.md`：流程图白底描边（橙判断 / 蓝步骤）；禁止黑底白框与大色块
 - `AGENTS.md` ≤ 300 行；详情只放相对链接，不粘贴长清单
 - 每步结束后自检；不通过则本步重做再进入下一步
 - 判断不清先做合理选择，在最终 summary 标「需人工确认」；**唯独 `flows` 的 propose 阶段必须打断等拍板**（覆盖「不要中途提问」）
@@ -31,21 +31,24 @@
 ### 不要做
 
 - emoji、徽章、HTML、CSS、`<details>` 折叠正文（部分 Agent 会跳过折叠内容）
-- 用 mermaid 替代已规定的 SVG 流程图
+- 用 mermaid 围栏代替已规定的 SVG 流程图（`.mmd` 作渲染源可以）
 - 每小节都画 `---`；关键事实只放图里、md 不写
 - 把同一事实复制成两套不同表述
 
 ## 质量门
 
 - 路径真实存在于当前仓库
-- SVG 遵守 `diagrams.md`：dark、无侧栏长文、无实现级细节堆砌
+- SVG 遵守 `diagrams.md`：白底描边、无黑底白框、无大色块、无侧栏长文
 - api-list 不编造契约
 - data-model 以本仓库 Model 为准，不使用 migrations
 - 域名称、V 页标题来自探测，不来自其它系统的记忆
 - 未命中的 F/L/V/X 不建页
-- **propose 不得产出** `{domain}-{slug}.md` 与细流程图
-- **deep** 必须有编号步骤 + 实现细节 + SVG；图节点与细节表对得上
-- 细流程图节点 ≤ 16；字段不进图；ER ≤ 12 实体
+- **propose 不得产出** `{domain}-{slug}.md` 与任何功能流程图
+- 已有可用候选页且仍等待选择、用户未说刷新：只复述，不重扫、不改该页
+- **deep** 必须有 `S*` 步骤表 + 实现细节 + L1 SVG；长流程再补 L2
+- 图节点、步骤表、调用栈共用同一套 `S*`；字段不进图
+- L1 ≤ 9 节点，L2 ≤ 14，L3 ≤ 8 且全功能 ≤ 1 张；禁止一张细图覆盖整条长链
+- ER ≤ 12 实体
 - AGENTS.md ≤ 300 行
 - `mode=surfaces` / `mode=domains` / `mode=full` 结束后必须存在 `docs/agents/01-domains/INDEX.md`，且域表至少 1 行真实路径
 - md 遵守「文档版式」：一个 H1、清单用表、无 emoji/HTML/`<details>`
@@ -57,19 +60,20 @@
 - 剖面无法判定：按 generic-php 能扫多少扫多少，summary 标需人工确认
 - F 链路追断：写到最后一个可打开的类，下一跳标「待确认」
 - V 过多：细节页列前 20；图上主路径 + 一条对照 + 「其它 N」
-- 图将超过 16 节点：合并纯转发，保留判断与写库
+- 单图将超上限：先拆 L2，再合并纯转发；仍超才出一张 L3
+- 长流程若只交了一张细总图：本步重做，改成 L1 + 阶段 L2
 
 ## Summary 模板
 
 ```markdown
 # Codex Map summary
 - system / 剖面 / mode / domain / feature：
-- phase：propose | deep | skeleton | n/a
+- phase：propose | propose-reuse | deep | skeleton | n/a
 - 并行：是/否；子代理列表（A diagrams / B surfaces / C data / D domains / E flows…）与各自结果：
 - 探测到的业务域：
 - 四层探测：F= / L= / V= / X=
-- propose 时：候选 slug 列表（等拍板）：
-- deep 时：深挖的 slug + md/svg 路径：
+- propose 时：候选 slug 列表（等拍板）；reuse 时写来源文件：
+- deep 时：深挖的 slug + md + L1/L2 路径：
 - 写入文件列表：
 - 各文件一句话摘要：
 - 需人工确认：

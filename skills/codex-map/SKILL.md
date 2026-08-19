@@ -61,6 +61,8 @@ docs/agents/
   03-deep-dives/variants/INDEX.md
   03-deep-dives/contracts.md
   diagrams/*.svg
+  diagrams/flows/{domain}-{slug}-overview.svg
+  diagrams/flows/{domain}-{slug}-{phase}.svg
 ```
 
 未命中的层不要创建对应文件。过期页标过期，不擅自删除。
@@ -82,7 +84,7 @@ docs/agents/
 
 | 阶段 | 触发 | 做什么 | 停不停 |
 |---|---|---|---|
-| **propose** | 有 `domain=`，且消息里没有明确选定的功能 | 给出最复杂 3～5 个候选；可写 `flows/{domain}.md` 候选表；禁止写 `{domain}-{slug}.md`、禁止画细流程图 | **必须停住** |
+| **propose** | 有 `domain=`，且消息里没有明确选定的功能 | 无可用候选页才扫描打分；已有且仍等待选择则只复述名单。禁止写 `{domain}-{slug}.md`、禁止画细流程图 | **必须停住** |
 | **deep** | 用户已拍板（`feature=` / 「就做 xxx」/ 点名候选） | 只深挖拍板的那 1 个 | 做完再 summary |
 
 禁止带 `domain=` 时自动挑 Top N 并直接深写。无 `domain=`：只写 1～2 个入口最多域的骨架链，不出功能图。细则见 `references/modes-flows.md`。
