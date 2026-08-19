@@ -7,7 +7,7 @@ description: >
   data-model pages, flow/lifecycle/variant/contract deep-dives, per-domain
   feature shortlists (propose then wait), deep feature docs and flowcharts after
   the user picks a feature, or regenerating AGENTS.md/INDEX.md. Supports
-  mode=full|diagrams|surfaces|data|flows|entrypoint, optional domain=
+  mode=full|diagrams|domains|surfaces|data|flows|entrypoint, optional domain=
   (project-discovered), optional feature= slug or natural language, optional
   system=auto|<short-name>. For mode=full (default), orchestrates parallel
   subagents after repo detection. Writes only docs/agents/** and AGENTS.md
@@ -27,7 +27,7 @@ description: >
 
 解析用户消息（缺省如下）。参数用**空格**分隔，例如 `使用 codex-map mode=flows domain=order`；逗号也能识别，但对外示例一律写空格。
 
-- `mode`：`full`（默认）| `diagrams` | `surfaces` | `data` | `flows` | `entrypoint`
+- `mode`：`full`（默认）| `diagrams` | `domains` | `surfaces` | `data` | `flows` | `entrypoint`
 - `system`（可选）：`auto`（默认）或任意短名（从 README / 包名 / 目录名探测，也可手写）  
   只用于 `AGENTS.md` / overview 里的系统称谓，**不改变扫描规则**
 - `domain`（可选）：只框定该业务域。合法值来自本仓库探测结果
@@ -64,6 +64,28 @@ description: >
 - `AGENTS.md` ≤ 300 行；详情只放相对链接，不粘贴长清单
 - 每步结束后自检；不通过则本步重做再进入下一步
 - 判断不清先做合理选择，在最终 summary 标「需人工确认」；**唯独 `flows` 的 propose 阶段必须打断等拍板**（覆盖「不要中途提问」）
+- Markdown 遵守下文「文档版式」：结构清楚即可，禁止装饰
+
+## 文档版式（给人扫、给 AI 解析）
+
+目标是**结构清楚**，不是杂志排版。AI 认的是标题层级、表格列、相对链接、稳定文件名；堆装饰会降低命中率。
+
+### 要做
+
+- 每个 md **一个 H1**；H2 分块；H3 仅深页（步骤 / 实现细节）；禁止 H4+
+- 文首 4～7 行元信息：系统 / 剖面 / 更新时间 / 真源 / 条目数（没有的项省略，不要编）
+- 清单、契约、域、调用栈一律用**表**；职责写一句话，禁止用段落堆字段
+- 超过约 8 个分组的长清单：H1 后先放「分组锚点索引表」，再写各节
+- 节与节空一行；表前一行写「合计 N」（能数出来才写数字）
+- 缺口 / 待确认用引用块：`> 缺口：…`；表内单元格写 `待确认`
+- 状态用纯文字：`有` / `无` / `待确认` / `已深挖` / `等待用户选择`
+
+### 不要做
+
+- emoji、徽章、HTML、CSS、`<details>` 折叠正文（部分 Agent 会跳过折叠内容）
+- 用 mermaid 替代已规定的 SVG 流程图
+- 每小节都画 `---`；关键事实只放图里、md 不写
+- 把同一事实复制成两套不同表述
 
 ## 目录契约（所有项目相同）
 
@@ -71,7 +93,7 @@ description: >
 AGENTS.md
 docs/agents/
   INDEX.md
-  01-domains/
+  01-domains/INDEX.md                     # 域短索引；surfaces / domains 必写
   02-surfaces/api-list.md
   02-surfaces/cli-and-consumers.md
   03-deep-dives/data-model.md
@@ -113,7 +135,7 @@ docs/agents/
 
 ### 3) 业务域列表
 
-从本仓库推导，写入 `docs/agents/01-domains/` 索引（`full` / `surfaces` / `data` / `flows` 时）：
+从本仓库推导域名单。**写出 `docs/agents/01-domains/INDEX.md` 的时机见「写 01-domains/INDEX.md」**；禁止只把域名顿号连写成 `INDEX.md` 里的一行。
 
 - `yii2-advanced`：`backend/modules/*` 下的业务子目录、controller 分组、`common/` 下明显限界目录
 - 其它剖面：顶层业务包、路由前缀、module 名
@@ -330,6 +352,46 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 - 禁止 mermaid 替代 SVG
 - 自检：图上每个判断/写库能在细节页表里对上
 
+## 写 01-domains/INDEX.md（共用）
+
+路径固定：`docs/agents/01-domains/INDEX.md`。只做域短索引，**禁止**把 api-list 粘进来。
+
+| 触发 | 策略 |
+|---|---|
+| `mode=domains` | 重生域表 |
+| `mode=surfaces` 单跑 | **先写域索引，再扫 API**；api-list 完成后回填「HTTP 条数」（能数出来才写数字） |
+| `mode=full` 子代理 D | 重生域表（子代理 B **不写**此文件） |
+| `mode=data` / `mode=flows` | **仅当该文件不存在**时创建；已存在则只给本轮碰到的域补「深潜」链接，不改职责原文 |
+| `mode=diagrams` / `entrypoint` | 不写此文件 |
+
+重生时：职责与入口以本轮探测为准；若仓库里已有 `03-deep-dives/flows/{domain}.md`，深潜列保留相对链接。
+
+模板（遵守「文档版式」）：
+
+```markdown
+# {system} 业务域索引
+
+- 系统：
+- 剖面：
+- 探测时间：
+- 真源：（controller 目录 / 路由前缀 / 模块名，必须是本仓库路径）
+- 域数量：N
+
+HTTP 见 [../02-surfaces/api-list.md](../02-surfaces/api-list.md)。CLI / Consumer 见 [../02-surfaces/cli-and-consumers.md](../02-surfaces/cli-and-consumers.md)。模型见 [../03-deep-dives/data-model.md](../03-deep-dives/data-model.md)。
+
+## 域
+
+| 域 | 职责（一句话） | 入口路径 | HTTP 条数 | 深潜 |
+|---|---|---|---:|---|
+| {slug} | … | `controllers/…` · `routes/…` | 12 或 — | [flows](../03-deep-dives/flows/{slug}.md) 或 — |
+
+## 缺口
+
+> 无路由的 controller、空模块、命名对不上的目录。没有则写「本轮未见」。
+```
+
+职责必须来自本轮打开的 README / 模块注释 / 控制器目录名；推不出写 `待确认`，禁止用其它仓库的外号。
+
 ## mode 执行
 
 ### mode=diagrams
@@ -340,36 +402,50 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 4. 写 `external-deps.svg`：三类分色 — 关键语言依赖、中间件、外部 API
 5. 自检路径与分层后进入 summary（若仅 diagrams）
 
+### mode=domains
+
+只写域短索引，不扫全量 API。用于分步跑漏了 `01-domains`，或只想刷新域表。
+
+1. 完成开跑前探测第 1～3 节
+2. 按「写 01-domains/INDEX.md」重生域表（条数暂 `—`，除非本轮已打开路由文件能直接数出来）
+3. 若已有 `docs/agents/INDEX.md`：阅读顺序在架构图之后、surfaces 之前插入 `01-domains/INDEX.md`；覆盖率行改为有
+4. 不改 api-list / data-model / flows / AGENTS.md
+5. summary
+
 ### mode=surfaces
 
 1. 探测域列表
-2. 扫 HTTP → `docs/agents/02-surfaces/api-list.md`（方法、路径、一句话、主入参、返回要点；按模块分组；推不出标「待确认」）
-3. 扫 CLI + consumers → `cli-and-consumers.md`（没有则明确写无）
-4. 若带 `domain=`，只深写该域，其它域保留索引或「待补」
-5. 自检：抽样打开文档中的文件路径
+2. **立刻**按「写 01-domains/INDEX.md」写出域短索引（不要等 API 扫完；条数可先 `—`）
+3. 扫 HTTP → `docs/agents/02-surfaces/api-list.md`（方法、路径、一句话、主入参、返回要点；按模块分组；推不出标「待确认」；长清单先放分组锚点索引表）
+4. 扫 CLI + consumers → `cli-and-consumers.md`（没有则明确写无）
+5. 回填 `01-domains/INDEX.md` 的「HTTP 条数」
+6. 若带 `domain=`，只深写该域的 surfaces，其它域在域索引中保留行或标「待补」
+7. 自检：抽样打开文档中的文件路径；确认 `01-domains/INDEX.md` 已存在且域数量 ≥ 1
 
 ### mode=data
 
-1. **只扫 Model**（当前剖面下的 Model 目录）。高价值域 = 探测域里入口最多或用户 `domain=` 指定的集合，不要默认某个业务名
-2. 字段与说明来自 `rules()` / `attributeLabels()` / 属性注释（或其它栈等价物）；关系来自关系方法；表名来自 `tableName()` 或等价声明
-3. 写 `docs/agents/03-deep-dives/data-model.md`（文首写明真源是 Model，不含 migration）
-4. 写 `docs/agents/diagrams/data-model-er.svg`（只画 Model 声明的关系）
-5. 非核心 Model 只列索引清单，不穷尽全部类
-6. 禁止打开 `console/migrations`、`migrations/` 或把 migration 当对照源
+1. 若 `docs/agents/01-domains/INDEX.md` **不存在**：按共用节补写；已存在则不动职责原文
+2. **只扫 Model**（当前剖面下的 Model 目录）。高价值域 = 探测域里入口最多或用户 `domain=` 指定的集合，不要默认某个业务名
+3. 字段与说明来自 `rules()` / `attributeLabels()` / 属性注释（或其它栈等价物）；关系来自关系方法；表名来自 `tableName()` 或等价声明
+4. 写 `docs/agents/03-deep-dives/data-model.md`（文首写明真源是 Model，不含 migration）
+5. 写 `docs/agents/diagrams/data-model-er.svg`（只画 Model 声明的关系）
+6. 非核心 Model 只列索引清单，不穷尽全部类
+7. 禁止打开 `console/migrations`、`migrations/` 或把 migration 当对照源
 
 ### mode=flows
 
 1. 完成开跑前探测（含第 5 节四层）
-2. 写 `docs/agents/03-deep-dives/layers.md`
-3. **F 本仓库无**：不写 `flows/`、不画图；summary 后结束
-4. **无 `domain=`**：取入口最多的 1～2 个域，每域 2～3 条骨架链写入 `flows/{domain}.md`（模板见下），不出功能图；然后跳到更新 INDEX → Summary
-5. **有 `domain=`，未拍板（propose）**：
+2. 若 `docs/agents/01-domains/INDEX.md` **不存在**：按共用节补写；已存在则只给本轮域补「深潜」链接
+3. 写 `docs/agents/03-deep-dives/layers.md`
+4. **F 本仓库无**：不写 `flows/`、不画图；summary 后结束
+5. **无 `domain=`**：取入口最多的 1～2 个域，每域 2～3 条骨架链写入 `flows/{domain}.md`（模板见下），不出功能图；然后跳到更新 INDEX → Summary
+6. **有 `domain=`，未拍板（propose）**：
    - 只该域，执行第 6 节聚类 + 打分
    - 写 `flows/{domain}.md` 候选表（Top 3～5）
    - 对话给出候选并请拍板
    - **停止**（不写细节页、不画细图、不深写 L/V/X）
    - Summary 标明 `phase=propose`、候选 slug 列表
-6. **有 `domain=`，已拍板（deep）**：
+7. **有 `domain=`，已拍板（deep）**：
    - 解析 `feature` / 自然语言到唯一 slug；对不上则再问，不深写
    - 写 `flows/{domain}-{slug}.md` + `diagrams/flows/{domain}-{slug}.svg`
    - 更新 `flows/{domain}.md` 该行状态为已深挖
@@ -393,9 +469,11 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 ### mode=entrypoint
 
 1. 只读已有 `docs/agents/**`（不扫全库）
-2. 写/更新 `docs/agents/INDEX.md`（阅读顺序、覆盖率、缺口、本仓库探测到的 system/剖面/四层判定）
+2. 写/更新 `docs/agents/INDEX.md`：阅读顺序、覆盖率、缺口、本仓库探测到的 system/剖面/四层判定。  
+   **若 `01-domains/INDEX.md` 存在**：阅读顺序插在架构图之后、surfaces 之前，用链接指向它；**禁止**把域名单只写成一行顿号列表来代替该页。  
+   **若该页不存在**但 `02-surfaces` 已有：覆盖率标缺口，summary 提示跑 `mode=domains` 或再跑 `mode=surfaces`
 3. 写/更新根 `AGENTS.md`：项目定位、核心架构、关键模块、关键约定、怎么跑；  
-   「禁区」「历史包袱」两节写「待团队补充」
+   「禁区」「历史包袱」两节写「待团队补充」；业务域一节链到 `docs/agents/01-domains/INDEX.md`（文件存在时）
 4. 若 `dual_claude=true`，同构写 `CLAUDE.md`
 
 ### mode=full
@@ -437,9 +515,9 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 同时派 A + B + C + D：
 
 - A：按 mode=diagrams 写三张全景图  
-- B：按 mode=surfaces 写 api-list + cli-and-consumers  
+- B：按 mode=surfaces 写 api-list + cli-and-consumers；**跳过** surfaces 中写 `01-domains` 的步骤（由 D 写，禁止交叉）  
 - C：按 mode=data 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
-- D：按探测域写 `01-domains/` 短索引  
+- D：按探测域写 `01-domains/INDEX.md` 短索引  
 
 每个子代理 prompt 必须包含：仓库根路径、探测摘要、本 skill 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。
 
@@ -464,7 +542,7 @@ api/cli ↔ data-model ↔ 已有 flows 页；不一致只改文档。若仓库�
 
 #### 单 mode 是否并行
 
-- `mode=diagrams|surfaces|data|entrypoint|flows`：默认主代理直接做，**不**强制子代理  
+- `mode=diagrams|domains|surfaces|data|entrypoint|flows`：默认主代理直接做，**不**强制子代理  
 - 仅当用户明确要求「并行 / 用 subagent」且任务可拆（例如 surfaces 按域拆）时再拆；拆时仍遵守写文件边界
 
 ## 质量门
@@ -479,6 +557,8 @@ api/cli ↔ data-model ↔ 已有 flows 页；不一致只改文档。若仓库�
 - **deep** 必须有编号步骤 + 实现细节 + SVG；图节点与细节表对得上
 - 细流程图节点 ≤ 28；字段不进图
 - AGENTS.md ≤ 300 行
+- `mode=surfaces` / `mode=domains` / `mode=full` 结束后必须存在 `docs/agents/01-domains/INDEX.md`，且域表至少 1 行真实路径
+- md 遵守「文档版式」：一个 H1、清单用表、无 emoji/HTML/`<details>`
 
 ## 降级
 

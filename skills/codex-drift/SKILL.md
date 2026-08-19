@@ -27,7 +27,7 @@ description: >
 
 1. 优先：相对 `main`（或用户指定 base）的 `git diff` 触及路径
 2. 路径 → 文档映射：
-   - controllers / routes → `docs/agents/02-surfaces/api-list.md`
+   - controllers / routes / 业务模块分组 → `docs/agents/01-domains/INDEX.md`、`docs/agents/02-surfaces/api-list.md`
    - console / commands / consumer → `docs/agents/02-surfaces/cli-and-consumers.md`
    - models → `docs/agents/03-deep-dives/data-model.md`（以 Model 为准，忽略 migrations）
    - service / handler / task / slice（及本仓库等价编排目录） → `docs/agents/03-deep-dives/flows/`、`layers.md`、`docs/agents/diagrams/flows/*.svg`
@@ -69,6 +69,7 @@ description: >
 |----|------|----------|----------|------|----------|
 
 ## 建议的重生命令（不执行）
+- codex-map mode=domains（仅补 `01-domains/INDEX.md`）
 - codex-map mode=surfaces domain=<本仓库探测到的域>
 - codex-map mode=flows domain=<本仓库探测到的域>（先 propose 候选，等拍板）
 - codex-map mode=flows domain=<域> feature=<slug>（拍板后 deep）

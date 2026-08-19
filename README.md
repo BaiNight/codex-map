@@ -54,7 +54,13 @@ cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
 使用 codex-map mode=full
 ```
 
-也可分步：`mode=diagrams` → `surfaces` → `data` → `entrypoint`。
+也可分步：`mode=diagrams` → `surfaces`（同时写 `01-domains`）→ `data` → `entrypoint`。
+
+已跑完 surfaces 但缺 `01-domains` 时，不必重扫 API：
+
+```text
+使用 codex-map mode=domains
+```
 
 梳理某一业务域的复杂功能时，分两步：
 
@@ -76,7 +82,7 @@ cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
 
 | 参数 | 默认 | 说明 |
 |---|---|---|
-| `mode` | `full` | `full` \| `diagrams` \| `surfaces` \| `data` \| `flows` \| `entrypoint` |
+| `mode` | `full` | `full` \| `diagrams` \| `domains` \| `surfaces` \| `data` \| `flows` \| `entrypoint` |
 | `system` | `auto` | 系统显示名；可省略，由仓库 README / 包名 / 目录名推断 |
 | `domain` | 无 | 只处理当前仓库里探测到的某一个业务域 |
 | `feature` | 无 | 指定要深写的功能；未指定时只出候选，不自动深写 |
@@ -90,7 +96,7 @@ cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
 AGENTS.md
 docs/agents/
   INDEX.md
-  01-domains/
+  01-domains/INDEX.md
   02-surfaces/api-list.md
   02-surfaces/cli-and-consumers.md
   03-deep-dives/data-model.md
@@ -99,7 +105,7 @@ docs/agents/
   diagrams/*.svg
 ```
 
-业务划分、入口和依赖以**当前仓库里实际存在的路径**为准。
+业务划分、入口和依赖以**当前仓库里实际存在的路径**为准。文档用标题 + 表格，不加装饰，方便 Agent 解析。
 
 ## 非目标
 

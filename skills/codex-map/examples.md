@@ -14,6 +14,14 @@
 使用 codex-map mode=diagrams
 ```
 
+## 只补域索引
+
+```text
+使用 codex-map mode=domains
+```
+
+`mode=surfaces` 单跑时也会写 `01-domains/INDEX.md`，不必先跑 `domains`。
+
 ## 主链路：先候选
 
 ```text
