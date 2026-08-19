@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 900" width="720" height="900">
+<defs>
+  <style>
+    .bg { fill: #ffffff; }
+    .title { fill: #1f2328; font: 700 20px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    .sub { fill: #656d76; font: 12px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    .n { fill: #1f2328; font: 600 13px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    .d { fill: #656d76; font: 11px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    .edge { fill: #656d76; font: 11px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; }
+    .arr { stroke: #4a90d9; stroke-width: 1.6; fill: none; marker-end: url(#ah); }
+    .arr-side { stroke: #9ca3af; stroke-width: 1.2; fill: none; marker-end: url(#ahg); }
+  </style>
+  <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a90d9"/>
+  </marker>
+  <marker id="ahg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#9ca3af"/>
+  </marker>
+</defs>
+<rect class="bg" width="720" height="900"/>
+<text class="title" x="40" y="36">订单利润计算 L2 · persist</text>
+<text class="sub" x="40" y="56">释放锁后上卷 mongo 并回写 order 利润字段</text>
+<g><rect x="80" y="76" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="98" text-anchor="middle">S7.1 释放计算锁</text>
+<text class="d" x="200.0" y="118" text-anchor="middle">RedLock::releaseLock</text>
+</g>
+<path class="arr" d="M 200 132 L 200 164"/>
+<g><rect x="80" y="164" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="186" text-anchor="middle">S7.2 ChangeEvent</text>
+<text class="d" x="200.0" y="206" text-anchor="middle">OrderExpenseChangeEvent</text>
+</g>
+<path class="arr" d="M 200 220 L 200 252"/>
+<g><polygon points="200,252.0 268.0,288 200,324.0 132.0,288" fill="#ffffff" stroke="#f5a623" stroke-width="1.6"/>
+<text class="n" fill="#d97706" x="200" y="284" text-anchor="middle">S7.3 Amazon?</text>
+<text class="d" x="200" y="302" text-anchor="middle">platform_id</text>
+</g>
+<text class="edge" x="272" y="284">是 TAG2</text>
+<text class="edge" x="70" y="336">否 tag空</text>
+<path class="arr" d="M 200 324 L 200 364"/>
+<g><rect x="80" y="364" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="386" text-anchor="middle">S7.4 EstimateSkuExpense</text>
+<text class="d" x="200.0" y="406" text-anchor="middle">写 sku_stats</text>
+</g>
+<path class="arr" d="M 200 420 L 200 452"/>
+<g><rect x="80" y="452" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="474" text-anchor="middle">S7.5 EstimateOrderExpense</text>
+<text class="d" x="200.0" y="494" text-anchor="middle">写 expense_stats</text>
+</g>
+<path class="arr" d="M 200 508 L 200 540"/>
+<g><rect x="80" y="540" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="562" text-anchor="middle">S7.6 RealitySku/Order</text>
+<text class="d" x="200.0" y="582" text-anchor="middle">实际费用上卷</text>
+</g>
+<path class="arr" d="M 200 596 L 200 628"/>
+<g><rect x="80" y="628" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="650" text-anchor="middle">S7.7 退款算子 +N</text>
+<text class="d" x="200.0" y="670" text-anchor="middle">有退款才跑</text>
+</g>
+<path class="arr" d="M 200 684 L 200 716"/>
+<g><rect x="80" y="716" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="738" text-anchor="middle">S7.8 写 order 利润</text>
+<text class="d" x="200.0" y="758" text-anchor="middle">order_profit / income</text>
+</g>
+<path class="arr" d="M 200 772 L 200 804"/>
+<g><rect x="80" y="804" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="200.0" y="826" text-anchor="middle">S7.9 利润检测事件</text>
+<text class="d" x="200.0" y="846" text-anchor="middle">CompletedEvent</text>
+</g>
+<path class="arr-side" d="M 268 288 L 480 288 L 480 392"/>
+<g><rect x="360" y="364" width="240" height="56" rx="8" fill="#f8fbff" stroke="#4a90d9" stroke-width="1.6"/>
+<text class="n" fill="#1f2328" x="480.0" y="386" text-anchor="middle">S7.3b RollupChain tag=v2</text>
+<text class="d" x="480.0" y="406" text-anchor="middle">ExpenseTag::TAG2</text>
+</g>
+<path class="arr-side" d="M 480 420 L 480 452 L 320 452"/>
+</svg>
