@@ -59,7 +59,7 @@ HTTP 条数（摘自 api-list / data-model）：base 103、order 52、expense 43
 
 ### 文档自洽
 
-- `data-model.md` 真源仍是 migrations，当前 `docs-bootstrap` skill 要求 **只扫 Model、不读 migrations**。改表前应再跑 `mode=data`，或以 `backend/models` 为准并人工核对。
+- `data-model.md` 真源仍是 migrations，当前 `codex-map` skill 要求 **只扫 Model、不读 migrations**。改表前应再跑 `mode=data`，或以 `backend/models` 为准并人工核对。
 - 上一轮用户要求「Model 优先、migration 仅对照」**尚未落地**到 `data-model.md`。
 
 ### 已有页内缺口（原文档已标）

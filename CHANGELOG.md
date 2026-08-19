@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2 — 2026-08-19
+
+- 将 `codex-map` 拆成薄 `SKILL.md` + `references/`，按 mode 按需加载
+- 对外文档不再使用历史内部 skill 名
+
 ## 0.1.1 — 2026-08-19
 
 - 分步跑 `mode=surfaces` 时必写 `docs/agents/01-domains/INDEX.md`；`data` / `flows` 在该页缺失时补写

@@ -6,7 +6,9 @@
 
 | 路径 | 职责 |
 |---|---|
-| `skills/codex-map/SKILL.md` | 生成 / 重生 `docs/agents/**` 与 `AGENTS.md` |
+| `skills/codex-map/SKILL.md` | 生成入口与 mode 调度 |
+| `skills/codex-map/references/*` | 探测、各 mode 步骤、质量门 |
+| `skills/codex-map/examples.md` | 对话例句 |
 | `skills/codex-drift/SKILL.md` | 只读漂移检查 |
 | `README.md` | 安装与用法 |
 
