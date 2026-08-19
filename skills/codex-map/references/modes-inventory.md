@@ -1,15 +1,15 @@
 # 清单类 mode
 
 本文件覆盖 `diagrams` / `domains` / `surfaces` / `data` / `entrypoint`。
-执行前已读 `detect.md` 与 `quality.md`。不要打开 `modes-flows.md` / `modes-full.md`。
+执行前已读 `detect.md` 与 `quality.md`。`diagrams` / `data` 还必须读 `diagrams.md` 再画 SVG。不要打开 `modes-flows.md` / `modes-full.md`。
 
 ### mode=diagrams
 
 1. 完成「开跑前探测」；读 README、顶层目录、composer、关键 config
-2. 写 `docs/agents/diagrams/architecture.svg`：按本仓库分层；核心模块「名 + 一句话」；基础设施一个方框
-3. 写 `module-deps.svg`：只画本仓库模块/目录边界；循环依赖红色
-4. 写 `external-deps.svg`：三类分色 — 关键语言依赖、中间件、外部 API
-5. 自检路径与分层后进入 summary（若仅 diagrams）
+2. 按 `diagrams.md` 写 `docs/agents/diagrams/architecture.svg`：4～5 泳道；核心模块「名 + 一句话」；每行 ≤ 4 框；无侧栏说明书
+3. 按 `diagrams.md` 写 `module-deps.svg`：只画本仓库模块/目录边界；≤ 12 框；循环依赖红边，说明写 md 不写进图
+4. 按 `diagrams.md` 写 `external-deps.svg`：三类分色 — 关键语言依赖、中间件、外部 API；每列 ≤ 7 项
+5. 自检：路径真实 + `diagrams.md` 落盘清单。仅 diagrams 则进入 summary
 
 ### mode=domains
 
@@ -37,7 +37,7 @@
 2. **只扫 Model**（当前剖面下的 Model 目录）。高价值域 = 探测域里入口最多或用户 `domain=` 指定的集合，不要默认某个业务名
 3. 字段与说明来自 `rules()` / `attributeLabels()` / 属性注释（或其它栈等价物）；关系来自关系方法；表名来自 `tableName()` 或等价声明
 4. 写 `docs/agents/03-deep-dives/data-model.md`（文首写明真源是 Model，不含 migration）
-5. 写 `docs/agents/diagrams/data-model-er.svg`（只画 Model 声明的关系）
+5. 按 `diagrams.md` 写 `docs/agents/diagrams/data-model-er.svg`（只画 Model 声明的关系；≤ 12 实体，每表 ≤ 3 个关系字段）
 6. 非核心 Model 只列索引清单，不穷尽全部类
 7. 禁止打开 `console/migrations`、`migrations/` 或把 migration 当对照源
 

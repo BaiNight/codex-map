@@ -71,9 +71,10 @@ docs/agents/
 
 | 用户 mode | 再读 |
 |---|---|
-| `diagrams` / `domains` / `surfaces` / `data` / `entrypoint` | `references/detect.md` + `references/modes-inventory.md` + `references/quality.md` |
-| `flows` | `references/detect.md` + `references/modes-flows.md` + `references/quality.md` |
-| `full` | `references/detect.md` + `references/modes-full.md` + `references/quality.md` |
+| `diagrams` / `data` | `references/detect.md` + `references/modes-inventory.md` + `references/quality.md` + `references/diagrams.md` |
+| `domains` / `surfaces` / `entrypoint` | `references/detect.md` + `references/modes-inventory.md` + `references/quality.md` |
+| `flows` | `references/detect.md` + `references/modes-flows.md` + `references/quality.md`；**deep 再读** `references/diagrams.md` |
+| `full` | `references/detect.md` + `references/modes-full.md` + `references/quality.md`（画图子代理再读 `diagrams.md`） |
 
 `examples.md` 仅用户问用法时打开。
 

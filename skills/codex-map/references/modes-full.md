@@ -39,12 +39,12 @@
 
 同时派 A + B + C + D：
 
-- A：按 `modes-inventory.md` 的 `mode=diagrams` 写三张全景图  
+- A：读 `diagrams.md`，按 `modes-inventory.md` 的 `mode=diagrams` 写三张全景图  
 - B：按 `modes-inventory.md` 的 `mode=surfaces` 写 api-list + cli-and-consumers；**跳过** surfaces 中写 `01-domains` 的步骤（由 D 写，禁止交叉）  
-- C：按 `modes-inventory.md` 的 `mode=data` 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
+- C：读 `diagrams.md`，按 `modes-inventory.md` 的 `mode=data` 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
 - D：按 `detect.md` 的「写 01-domains/INDEX.md」写短索引  
 
-每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。
+每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。A / C 还必须写「先读 `references/diagrams.md` 再画 SVG」。
 
 **波次 2 · flows（串行，等波次 1）**
 
