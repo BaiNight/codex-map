@@ -8,11 +8,15 @@
 使用 codex-map mode=full
 ```
 
+默认不写 `flows/`。要对某域深挖，再跑 `mode=flows domain=...`。
+
 ## 只重生图
 
 ```text
 使用 codex-map mode=diagrams
 ```
+
+全景图是企业分层风（浅灰底、层色实心卡片）；流程图不要动。若已有深色 GitHub 风旧图，本 mode 会按新规范重画。
 
 ## 只补域索引
 

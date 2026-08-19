@@ -28,7 +28,7 @@
 | 用户说了刷新 | 再跑聚类打分，覆盖候选表 | **已深挖行保留** slug / 链接 / 状态；只重算等待中与新增项 |
 | 无文件或不是候选表 | 完整 propose | 与原来相同 |
 
-无 `domain=`：不走两步协议；只写 1～2 个入口最多域的骨架链（2～3 条），不出功能图。
+无 `domain=`：不走两步协议；**不写** `flows/`，对话提示带 `domain=` 再调研。
 
 ### 6) 功能探测（仅 `mode=flows` 且带了 `domain=`）
 
@@ -43,7 +43,7 @@
 |---|
 | 同一 Controller 上的一组写操作（如 store / review / import） |
 | 同一 Consumer `name` 或同一 `*StrategyProvider` / 同一 chain 类 |
-| 写入同一核心 Model（`tableName()` 相同） |
+| 写入同一核心 Model（表名相同，取自本轮剖面节的 Model API） |
 | HTTP/CLI 投 MQ，由同域 Consumer 接着做 → **算同一功能**，不拆成两个 |
 
 功能短名（`slug`）优先级：路由注释 / action 注释 → Consumer yml `name` → Controller 去 `Controller` 后缀 + action-id。只允许 `[a-z0-9-]`。禁止自创中文产品名当 slug。
@@ -68,7 +68,7 @@
 | +4 | V 很宽 | Provider `providers()` ≥ 3，**或** chain `apply()` / 同类列表 ≥ 5 个算子 |
 | +4 | 调用深 | 入口到写库中间编排类 ≥ 4 跳（controller 不算） |
 | +3 | 分支多 | 主路径上按 status/type/mode/platform 等字段的 `if`/`switch` ≥ 3 |
-| +3 | 多表写入 | 不同 `tableName()` ≥ 3 |
+| +3 | 多表写入 | 不同表名 ≥ 3 |
 | +2 | 有状态机 | 带 `getNext*` / 明确禁迁的 Status/State |
 | +2 | 批处理 | 列表/文件行/item 循环后落库或投 MQ |
 | +2 | 跨入口 | HTTP/CLI 投递，计算在 Consumer/task |
@@ -219,7 +219,7 @@ docs/agents/diagrams/flows/{domain}/{slug}/
 - 另选 1 条与主路径不同的代表分支对照差异
 
 #### 写库
-| Model | tableName | 调用方法 | 能看到的赋值 | 条件 |
+| Model | 表名 | 调用方法 | 能看到的赋值 | 条件 |
 |-------|-----------|----------|--------------|------|
 
 #### 消息与外部
@@ -266,7 +266,7 @@ docs/agents/diagrams/flows/{domain}/{slug}/
 2. 若 `docs/agents/01-domains/INDEX.md` **不存在**：按共用节补写；已存在则只给本轮域补「深潜」链接
 3. 写 `docs/agents/03-deep-dives/layers.md`
 4. **F 本仓库无**：不写 `flows/`、不画图；summary 后结束
-5. **无 `domain=`**：取入口最多的 1～2 个域，每域 2～3 条骨架链写入 `flows/{domain}.md`（模板见下），不出功能图；然后跳到更新 INDEX → Summary
+5. **无 `domain=`**：**不写** `flows/`、不画功能图；对话说明下一步 `mode=flows domain=<域>`；Summary `phase=n/a`；然后跳到更新 INDEX → Summary
 6. **有 `domain=`，未拍板（propose）**：
    - 先读 `flows/{domain}.md`，按「已有候选页」表决定复用或重扫
    - **复用**：对话复述名单 → **停止** → Summary 标明 `phase=propose-reuse`、来源文件、候选 slug
@@ -282,13 +282,3 @@ docs/agents/diagrams/flows/{domain}/{slug}/
    - 更新 `INDEX.md` 覆盖率
    - 自检：路径可打开；`S*` 在 L1、步骤表、调用栈三者对齐；无一张超长总图
    - Summary 标明 `phase=deep`、slug、L1/L2 路径
-
-骨架链模板（无 domain 时）：
-
-```text
-入口（HTTP / CLI / Consumer + 文件路径）
-  → 编排类（service / handler / task / slice + 方法）
-  → 分叉点（V 命中且本链用到；否则 本链无）
-  → 写入的 Model（tableName + 路径；否则 待确认）
-  → 对外调用（X 命中且本链用到；否则 本链无）
-```

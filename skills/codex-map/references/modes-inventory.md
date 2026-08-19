@@ -6,16 +6,16 @@
 ### mode=diagrams
 
 1. 完成「开跑前探测」；读 README、顶层目录、composer、关键 config
-2. 按 `diagrams.md` 写 `docs/agents/diagrams/architecture.svg`：4～5 泳道；核心模块「名 + 一句话」；每行 ≤ 4 框；无侧栏说明书
-3. 按 `diagrams.md` 写 `module-deps.svg`：只画本仓库模块/目录边界；≤ 12 框；循环依赖红边，说明写 md 不写进图
-4. 按 `diagrams.md` 写 `external-deps.svg`：三类分色 — 关键语言依赖、中间件、外部 API；每列 ≤ 7 项
+2. 按 `diagrams.md` **企业分层风**写 `docs/agents/diagrams/architecture.svg`：4～5 层带 + 左轨层名 + 层色实心卡片（标题/职责/技术点最多 3 行）+ 底栏一行图例；每行 ≤ 4 框；禁止深色主题、禁止右侧说明书墙
+3. 按 `diagrams.md` 写 `module-deps.svg`：同样分层实心卡；只画本仓库模块/目录边界；≤ 12 框；循环用红实心卡，说明写 md 不写进图
+4. 按 `diagrams.md` 写 `external-deps.svg`：三列层带分色 — 关键语言依赖、中间件、外部 API；每列 ≤ 7 项小卡
 5. 自检：路径真实 + `diagrams.md` 落盘清单。仅 diagrams 则进入 summary
 
 ### mode=domains
 
 只写域短索引，不扫全量 API。用于分步跑漏了 `01-domains`，或只想刷新域表。
 
-1. 完成开跑前探测第 1～3 节
+1. 按 `detect.md` 定包并查官网，用「官网 ∩ 仓库」出域名单；官网失败才读对应离线节
 2. 按「写 01-domains/INDEX.md」重生域表（条数暂 `—`，除非本轮已打开路由文件能直接数出来）
 3. 若已有 `docs/agents/INDEX.md`：阅读顺序在架构图之后、surfaces 之前插入 `01-domains/INDEX.md`；覆盖率行改为有
 4. 不改 api-list / data-model / flows / AGENTS.md
@@ -34,10 +34,10 @@
 ### mode=data
 
 1. 若 `docs/agents/01-domains/INDEX.md` **不存在**：按共用节补写；已存在则不动职责原文
-2. **只扫 Model**（当前剖面下的 Model 目录）。高价值域 = 探测域里入口最多或用户 `domain=` 指定的集合，不要默认某个业务名
-3. 字段与说明来自 `rules()` / `attributeLabels()` / 属性注释（或其它栈等价物）；关系来自关系方法；表名来自 `tableName()` 或等价声明
+2. **只扫 Model**（本轮官网 ∩ 仓库后的 Model 目录）。高价值域 = 探测域里入口最多或用户 `domain=` 指定的集合，不要默认某个业务名
+3. 字段与表名以本轮官网 Model 规范为准（求交后的真实类），不要套其它框架 API
 4. 写 `docs/agents/03-deep-dives/data-model.md`（文首写明真源是 Model，不含 migration）
-5. 按 `diagrams.md` 写 `docs/agents/diagrams/data-model-er.svg`（只画 Model 声明的关系；≤ 12 实体，每表 ≤ 3 个关系字段）
+5. 按 `diagrams.md` **企业分层风**写 `docs/agents/diagrams/data-model-er.svg`（白底实体 + 顶部域色条；只画 Model 声明的关系；≤ 12 实体，每表 ≤ 3 个关系字段）
 6. 非核心 Model 只列索引清单，不穷尽全部类
 7. 禁止打开 `console/migrations`、`migrations/` 或把 migration 当对照源
 

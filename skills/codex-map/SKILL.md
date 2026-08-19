@@ -69,7 +69,8 @@ docs/agents/
 
 ## 本轮读哪些文件
 
-先读本文件（已加载），再读下表。生成类 mode 一律读 `quality.md`。
+先读本文件（已加载），再读下表。生成类 mode 一律读 `quality.md`。  
+`detect.md`：先看 `composer.json` 定包，再 **WebFetch 官网结构/Model 页**，与本仓库路径求交。不要为新框架写死目录。官网失败才读文末离线兜底。
 
 | 用户 mode | 再读 |
 |---|---|
@@ -87,7 +88,7 @@ docs/agents/
 | **propose** | 有 `domain=`，且消息里没有明确选定的功能 | 无可用候选页才扫描打分；已有且仍等待选择则只复述名单。禁止写 `{domain}-{slug}.md`、禁止画细流程图 | **必须停住** |
 | **deep** | 用户已拍板（`feature=` / 「就做 xxx」/ 点名候选） | 只深挖拍板的那 1 个 | 做完再 summary |
 
-禁止带 `domain=` 时自动挑 Top N 并直接深写。无 `domain=`：只写 1～2 个入口最多域的骨架链，不出功能图。细则见 `references/modes-flows.md`。
+禁止带 `domain=` 时自动挑 Top N 并直接深写。无 `domain=`：**不写** `flows/`，提示下一步 `mode=flows domain=<域>`。细则见 `references/modes-flows.md`。
 
 ## 执行
 

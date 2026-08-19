@@ -1,5 +1,29 @@
 # Changelog
 
+## 0.1.13 — 2026-08-19
+
+- 探测主路径改为 composer 定包后查官网结构/Model 文档，再与仓库求交；换框架只加包名+官网行。laravel/thinkphp/yii2 专节降为官网失败时的离线兜底
+
+## 0.1.12 — 2026-08-19
+
+- 探测增加 ThinkPHP 剖面（`topthink/framework` / `topthink/think`）；Laravel / ThinkPHP / Yii2 各读一节，其余 PHP 走 generic
+
+## 0.1.11 — 2026-08-19
+
+- `detect.md` 改为只看 `composer.json` 定剖面，再只读 laravel / yii2 / generic 其中一节；F/L/V/X 总表不再写框架目录
+
+## 0.1.10 — 2026-08-19
+
+- 探测改为 composer 框架包优先，新增 `laravel` 剖面；禁止用 `backend/`+`common/` 误判 Yii2；F/L/V/X 与 Model 真源按剖面选用
+
+## 0.1.9 — 2026-08-19
+
+- `mode=full` 与无 `domain=` 的 `mode=flows` 不再写骨架链；`flows/` 只在指定域后才生成
+
+## 0.1.8 — 2026-08-19
+
+- 全景图（architecture / module-deps / external-deps / ER）改为企业分层风：浅灰底、层色实心卡片、左轨层名、底栏一行图例；流程图仍保持 ProcessOn 白底描边
+
 ## 0.1.7 — 2026-08-19
 
 - 流程图按功能建目录 `diagrams/flows/{domain}/{slug}/`，文件名 `01-overview.svg`、`02-{phase}.svg` 连续编号

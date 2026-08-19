@@ -3,8 +3,8 @@
 默认即 `full`。执行前已读 `detect.md` 与 `quality.md`。
 工作量大，**必须**用主代理编排 + 子代理并行，禁止主代理一人顺序干完所有扫描与写文件。
 
-逻辑顺序：探测 →（并行）图 / surfaces / data / 域索引 → flows 骨架或 propose → 互校 → entrypoint → summary。  
-**不要**在 full 里对某域自动 deep。若消息带了 `domain=` 且未拍板：清单类做完后对该域只做 propose 并停住。
+逻辑顺序：探测 →（并行）图 / surfaces / data / 域索引 →（仅当有 `domain=` 才 propose）→ 互校 → entrypoint → summary。  
+**不要**在 full 里对某域自动 deep。无 `domain=`：**不写** `flows/`。若消息带了 `domain=` 且未拍板：清单类做完后对该域只做 propose 并停住。
 
 子代理 prompt **不要**粘贴 `modes-inventory.md` / `modes-flows.md` 全文；只写「按某文件的某节做」+ 本角色允许写的路径。
 
@@ -22,7 +22,6 @@
 | 子代理 B · surfaces | `docs/agents/02-surfaces/api-list.md`、`cli-and-consumers.md` |
 | 子代理 C · data | `docs/agents/03-deep-dives/data-model.md`、`diagrams/data-model-er.svg` |
 | 子代理 D · domains | `docs/agents/01-domains/**`（短索引；不写深潜） |
-| 子代理 E · flows-skeleton | 仅当**无** `domain=`：`flows/{domain}.md` 骨架链（1～2 域） |
 | 主代理或单子代理 · flows-propose | 仅当有 `domain=` 且未拍板：候选表；**停住等用户**，不派 deep |
 
 禁止两个子代理写同一文件。子代理**禁止**改业务代码、禁止跑 deep、禁止改 `AGENTS.md`（留给 entrypoint）。
@@ -33,22 +32,22 @@
 
 1. 按 `detect.md` 做开跑前探测：称谓 / 剖面 / 域列表 / 四层 F/L/V/X  
 2. 写 `layers.md`  
-3. 把探测摘要（system、剖面、域列表、关键路径、四层判定）写进每个子代理 prompt，子代理**不要**重做全库探测
+3. 把探测摘要（system、剖面、官网来源、域列表、关键路径、四层判定）写进每个子代理 prompt；**只贴本轮官网求交后的路径**，不要贴其它框架离线节。子代理**不要**重做全库探测
 
 **波次 1 · 并行（同一轮发起）**
 
 同时派 A + B + C + D：
 
-- A：读 `diagrams.md`，按 `modes-inventory.md` 的 `mode=diagrams` 写三张全景图  
+- A：读 `diagrams.md` **企业分层风**（不要用流程图那套白底描边），按 `modes-inventory.md` 的 `mode=diagrams` 写三张全景图  
 - B：按 `modes-inventory.md` 的 `mode=surfaces` 写 api-list + cli-and-consumers；**跳过** surfaces 中写 `01-domains` 的步骤（由 D 写，禁止交叉）  
-- C：读 `diagrams.md`，按 `modes-inventory.md` 的 `mode=data` 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
+- C：读 `diagrams.md` **企业分层风**，按 `modes-inventory.md` 的 `mode=data` 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
 - D：按 `detect.md` 的「写 01-domains/INDEX.md」写短索引  
 
-每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。A / C 还必须写「先读 `references/diagrams.md` 再画 SVG」。
+每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。A / C 还必须写「先读 `references/diagrams.md` 再画 SVG；全景/ER 用企业分层风，禁止 `#0d1117` 深底，禁止画成流程图白框」。
 
-**波次 2 · flows（串行，等波次 1）**
+**波次 2 · flows（串行，等波次 1；可跳过）**
 
-- 无 `domain=`：派 E，按 `modes-flows.md` 写骨架链（可读 api-list 选入口最多的域；若 B 未完成则按 controller 文件数）  
+- 无 `domain=`：**跳过**，不写 `flows/`；summary 提示下一步 `mode=flows domain=<域>`  
 - 有 `domain=` 且未拍板：主代理按 `modes-flows.md` 做 propose（已有等待中的候选页则只复述）→ **停住**；波次 3/4 可先做互校+entrypoint（不含 deep）  
 - 有 `feature=`：本轮 full **不做 deep**；summary 提示用户单独再跑 `codex-map mode=flows` deep（避免 full 与细挖抢上下文）
 

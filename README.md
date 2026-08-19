@@ -54,6 +54,8 @@ cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
 使用 codex-map mode=full
 ```
 
+默认画出架构图、接口清单、数据模型和域索引，**不写**流程深挖。要对某域调研，再跑下面的 `mode=flows`。
+
 也可分步：`mode=diagrams` → `surfaces`（同时写 `01-domains`）→ `data` → `entrypoint`。
 
 已跑完 surfaces 但缺 `01-domains` 时，不必重扫 API：

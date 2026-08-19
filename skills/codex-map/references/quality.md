@@ -8,7 +8,7 @@
 - 禁止编造 HTTP 方法、入参、表字段、模块名、状态迁移、调用链下一跳
 - 禁止把其它仓库的业务域、模块名、中间件名单套到当前仓库
 - **四层有则写、无则标「本仓库无」**；未命中的层禁止建页、禁止用其它系统的实例当标题
-- SVG 遵守 `references/diagrams.md`：流程图白底描边（橙判断 / 蓝步骤）；禁止黑底白框与大色块
+- SVG 遵守 `references/diagrams.md`：全景图企业分层风（浅灰底、层色实心卡片）；流程图白底描边（橙判断 / 蓝步骤）；禁止 GitHub 深色主题
 - `AGENTS.md` ≤ 300 行；详情只放相对链接，不粘贴长清单
 - 每步结束后自检；不通过则本步重做再进入下一步
 - 判断不清先做合理选择，在最终 summary 标「需人工确认」；**唯独 `flows` 的 propose 阶段必须打断等拍板**（覆盖「不要中途提问」）
@@ -38,12 +38,15 @@
 ## 质量门
 
 - 路径真实存在于当前仓库
-- SVG 遵守 `diagrams.md`：白底描边、无黑底白框、无大色块、无侧栏长文
+- SVG 遵守 `diagrams.md`：全景图浅灰底+层色实心卡+左轨+一行图例；流程图白底描边；无 `#0d1117` 深底、无侧栏长文
 - api-list 不编造契约
-- data-model 以本仓库 Model 为准，不使用 migrations
+- data-model 以本仓库 Model 为准，不使用 migrations；字段 API 以 `detect.md` 本轮剖面节为准
+- 框架只看根目录 `composer.json`；目录与 Model API 以本轮官网摘录 ∩ 仓库实有路径为准。禁止用目录名猜框架、禁止套其它框架记忆
+- 新框架只在 `detect.md` 包名表加官网链接，禁止新写一节目录清单
 - 域名称、V 页标题来自探测，不来自其它系统的记忆
 - 未命中的 F/L/V/X 不建页
 - **propose 不得产出** `{domain}-{slug}.md` 与任何功能流程图
+- 无 `domain=` 时禁止新建 `flows/{domain}.md`（`full` / `flows` 皆然）；旧骨架页不删
 - 已有可用候选页且仍等待选择、用户未说刷新：只复述，不重扫、不改该页
 - **deep** 必须有 `S*` 步骤表 + 实现细节 + L1 SVG；长流程再补 L2
 - 图节点、步骤表、调用栈共用同一套 `S*`；字段不进图
@@ -57,7 +60,7 @@
 
 - 域过大：候选仍限 3～5；其余进未展开
 - 配置读不全：写「已知 + 待确认」，禁止假完整
-- 剖面无法判定：按 generic-php 能扫多少扫多少，summary 标需人工确认
+- 剖面无法判定：走 `detect.md` 的 generic 节，summary 标需人工确认
 - F 链路追断：写到最后一个可打开的类，下一跳标「待确认」
 - V 过多：细节页列前 20；图上主路径 + 一条对照 + 「其它 N」
 - 单图将超上限：先拆 L2，再合并纯转发；仍超才出一张 L3
@@ -68,8 +71,8 @@
 ```markdown
 # Codex Map summary
 - system / 剖面 / mode / domain / feature：
-- phase：propose | propose-reuse | deep | skeleton | n/a
-- 并行：是/否；子代理列表（A diagrams / B surfaces / C data / D domains / E flows…）与各自结果：
+- phase：propose | propose-reuse | deep | n/a
+- 并行：是/否；子代理列表（A diagrams / B surfaces / C data / D domains / flows-propose…）与各自结果：
 - 探测到的业务域：
 - 四层探测：F= / L= / V= / X=
 - propose 时：候选 slug 列表（等拍板）；reuse 时写来源文件：
