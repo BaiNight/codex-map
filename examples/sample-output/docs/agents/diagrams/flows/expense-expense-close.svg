@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 540" width="980" height="540">
+  <defs>
+    <style>
+      .t { fill: #e6edf3; font: 700 18px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .s { fill: #8b949e; font: 11px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .n { fill: #e6edf3; font: 600 12px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .d { fill: #8b949e; font: 10px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .e { fill: #8b949e; font: 10px "Segoe UI","Microsoft YaHei",sans-serif; }
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#484f58"/>
+    </marker>
+  </defs>
+  <rect width="980" height="540" fill="#0d1117"/>
+  <text class="t" x="28" y="32">expense · expense-close</text>
+  <text class="s" x="28" y="52">创建关账月 / 改 status</text>
+
+  <rect x="40" y="90" width="240" height="54" rx="8" fill="#12233a" stroke="#388bfd"/>
+  <text class="n" x="52" y="116">CLI expense-close-create</text>
+<text class="d" x="52" y="132">store(上月)</text>
+  <rect x="40" y="200" width="240" height="54" rx="8" fill="#12233a" stroke="#388bfd"/>
+  <text class="n" x="52" y="226">HTTP update-status</text>
+<text class="d" x="52" y="242">close_month / status</text>
+  <rect x="380" y="145" width="260" height="54" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="392" y="171">ExpenseCloseService</text>
+<text class="d" x="392" y="187">store / updateStatus</text>
+  <polygon points="780,128 880,172 780,216 680,172" fill="#161b22" stroke="#d29922"/>
+  <text class="n" text-anchor="middle" x="780" y="170">月已存在?</text>
+
+  <rect x="380" y="320" width="260" height="54" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="392" y="346">写 expense_close</text>
+<text class="d" x="392" y="362">status 0/1</text>
+  <rect x="380" y="430" width="260" height="54" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="392" y="456">LogUtils::record</text>
+<text class="d" x="392" y="472">仅 updateStatus</text>
+  <path d="M 280 117 L 380 117 L 380 145" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 280 227 L 380 227 L 380 199" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 640 172 L 680 172" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 780 216 L 780 280 L 510 280 L 510 320" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <text class="e" x="530" y="274">否=insert / 是=改</text>
+  <path d="M 510 374 L 510 430" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+</svg>

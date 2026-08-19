@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1260" width="1440" height="1260">
+  <defs>
+    <style>
+      .title{fill:#e6edf3;font:700 22px "Segoe UI",sans-serif}
+      .sub{fill:#8b949e;font:12px "Segoe UI",sans-serif}
+      .h{fill:#58a6ff;font:700 14px "Segoe UI",sans-serif}
+      .n{fill:#e6edf3;font:600 12px "Segoe UI",sans-serif}
+      .d{fill:#8b949e;font:10px "Segoe UI",sans-serif}
+      .line{fill:none;stroke:#484f58;stroke-width:1.5}
+      .fail{fill:none;stroke:#f85149;stroke-width:1.8}
+    </style>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#484f58"/>
+    </marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f85149"/>
+    </marker>
+  </defs>
+  <rect width="1440" height="1260" fill="#0d1117"/>
+  <text class="title" x="28" y="34">TikTok profit calculation - order_expense_calculate main chain</text>
+  <text class="sub" x="28" y="56">Consumer only; SYSTEM operators 01-12 expanded; one node per storage; red path is failure compensation</text>
+  <text class="h" x="40" y="92">ENTRY AND ORCHESTRATION</text>
+  <text class="h" x="430" y="92">SYSTEM BRANCH - FIRST 12 OPERATORS</text>
+  <text class="h" x="1040" y="92">INDEPENDENT STORAGE NODES</text>
+
+  <rect x="40" y="112" width="320" height="54" rx="8" fill="#271700" stroke="#db6d28"/>
+  <text class="n" x="56" y="136">MQ order_expense_calculate</text>
+  <text class="d" x="56" y="154">order.calculate / routing key order_profit</text>
+  <rect x="40" y="198" width="320" height="62" rx="8" fill="#12233a" stroke="#388bfd"/>
+  <text class="n" x="56" y="223">OrderProfitCalculateConsumer::consume</text>
+  <text class="d" x="56" y="241">empty($body) or empty($data) -&gt; ACK</text>
+  <polygon points="200,292 340,344 200,396 60,344" fill="#161b22" stroke="#d29922"/>
+  <text class="n" text-anchor="middle" x="200" y="338">$this-&gt;context-&gt;has(</text>
+  <text class="n" text-anchor="middle" x="200" y="355">$order-&gt;platform_id)</text>
+  <text class="d" text-anchor="middle" x="200" y="374">PlatformEnum::TIKTOK = 53</text>
+  <rect x="40" y="430" width="320" height="62" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="56" y="455">TiktokOrderProfitCalculateStrategy</text>
+  <text class="d" x="56" y="473">associateOrder($payload) -&gt; foreach</text>
+  <rect x="40" y="526" width="320" height="68" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="56" y="551">ExpenseSegmentManager::run</text>
+  <text class="d" x="56" y="569">globalRestriction -&gt; $chain-&gt;can()</text>
+  <text class="d" x="56" y="584">false -&gt; releaseLock + return</text>
+  <rect x="40" y="628" width="320" height="68" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="56" y="653">AbstractAllOperatorChain::before</text>
+  <text class="d" x="56" y="671">OrderExpenseRestEvent(mode=1)</text>
+  <text class="d" x="56" y="686">clear old expense unless onlyCalItemStat</text>
+  <polygon points="200,730 340,782 200,834 60,782" fill="#161b22" stroke="#d29922"/>
+  <text class="n" text-anchor="middle" x="200" y="776">$this-&gt;order-&gt;build_order_type</text>
+  <text class="d" text-anchor="middle" x="200" y="797">SYSTEM=0 / MANUAL=1</text>
+  <text class="d" text-anchor="middle" x="200" y="814">MANUAL path is in comparison diagram</text>
+
+  <rect x="430" y="112" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="444" y="135">01 TiktokFullSettlementExpense</text>
+  <text class="d" x="444" y="153">ORDER transaction / shop transaction</text>
+  <rect x="730" y="112" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="744" y="135">02 TiktokSalesRevenue</text>
+  <text class="d" x="744" y="153">sales revenue</text>
+  <rect x="430" y="198" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="444" y="221">03 PlatformCancelRefundAmount</text>
+  <text class="d" x="444" y="239">status=54 and shipping_status=1</text>
+  <rect x="730" y="198" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="744" y="221">04 CancelRefundSellerDiscount</text>
+  <text class="d" x="744" y="239">refund seller discount</text>
+  <rect x="430" y="284" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="444" y="307">05 TiktokTaxRevenue</text>
+  <text class="d" x="444" y="325">EU / non-EU tax branch</text>
+  <rect x="730" y="284" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="744" y="307">06 TiktokShippingFeeRevenue</text>
+  <text class="d" x="744" y="325">shipping revenue</text>
+  <rect x="430" y="370" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="444" y="393">07 ShippingFeeSellerDiscount</text>
+  <text class="d" x="444" y="411">seller shipping discount</text>
+  <rect x="730" y="370" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="744" y="393">08 TiktokDeductionTaxRevenue</text>
+  <text class="d" x="744" y="411">deduct customer tax</text>
+  <rect x="430" y="456" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="444" y="479">09 TiktokPlatformDiscountPrice</text>
+  <text class="d" x="444" y="497">-platform_discount</text>
+  <rect x="730" y="456" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="744" y="479">10 PlatformOtherExpenseDiscount</text>
+  <text class="d" x="744" y="497">+platform_discount</text>
+  <rect x="430" y="542" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="444" y="565">11 TiktokSellerDiscountPrice</text>
+  <text class="d" x="444" y="583">-seller_discount</text>
+  <rect x="730" y="542" width="260" height="54" rx="7" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="744" y="565">12 RetailDeliveryOtherRevenue</text>
+  <text class="d" x="744" y="583">retail_delivery_fee</text>
+  <rect x="430" y="640" width="560" height="58" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="446" y="665">OrderExpenseChangeEvent -&gt; OrderExpenseCalculateListener</text>
+  <text class="d" x="446" y="684">ExpenseOrderAndSkuRollupTask::run</text>
+
+  <rect x="1040" y="112" width="340" height="62" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="1056" y="137">order_expense_item_stats</text>
+  <text class="d" x="1056" y="155">createOrUpdate / createOrUpdateShop</text>
+  <rect x="1040" y="206" width="340" height="62" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="1056" y="231">order_expense_shop_stats</text>
+  <text class="d" x="1056" y="249">ExpenseShopTask::store / clearShopFeeBy</text>
+  <rect x="1040" y="300" width="340" height="62" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="1056" y="325">order_expense_sku_stats</text>
+  <text class="d" x="1056" y="343">SKU rollup updateByEntity</text>
+  <rect x="1040" y="394" width="340" height="62" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="1056" y="419">order_expense_stats</text>
+  <text class="d" x="1056" y="437">order rollup updateByEntity</text>
+  <rect x="1040" y="488" width="340" height="62" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="1056" y="513">order</text>
+  <text class="d" x="1056" y="531">profit, income, rates, total profit</text>
+  <rect x="1040" y="582" width="340" height="62" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="1056" y="607">order_item</text>
+  <text class="d" x="1056" y="625">updateSkuIncome($order)</text>
+
+  <rect x="430" y="760" width="560" height="126" rx="8" fill="#2a1214" stroke="#f85149"/>
+  <text class="n" x="446" y="786">FAILURE: catch (\Throwable $throwable)</text>
+  <text class="d" x="446" y="808">1. stdoutErr + notify-&gt;immediatelyNotify(...)</text>
+  <text class="d" x="446" y="830">2. deliveryDelay(..., 'order_profit_task', random_int(120, 300), ++$retry)</text>
+  <text class="d" x="446" y="852">3. finally -&gt; ConsumerInterface::MSG_ACK</text>
+  <text class="d" x="446" y="874">Original message is always ACKed; no NACK/requeue</text>
+  <rect x="1040" y="760" width="340" height="126" rx="8" fill="#1f1a0f" stroke="#d29922"/>
+  <text class="n" x="1056" y="786">NON-EXCEPTION SHORT CIRCUITS</text>
+  <text class="d" x="1056" y="808">empty body/data -&gt; ACK</text>
+  <text class="d" x="1056" y="830">can() false -&gt; releaseLock -&gt; ACK</text>
+  <text class="d" x="1056" y="852">close-time hit -&gt; rollup/log -&gt; ACK</text>
+  <text class="d" x="1056" y="874">Exact conditions are copied in the detail page</text>
+
+  <path class="line" d="M200 166V198" marker-end="url(#a)"/>
+  <path class="line" d="M200 260V292" marker-end="url(#a)"/>
+  <path class="line" d="M200 396V430" marker-end="url(#a)"/>
+  <path class="line" d="M200 492V526" marker-end="url(#a)"/>
+  <path class="line" d="M200 594V628" marker-end="url(#a)"/>
+  <path class="line" d="M200 696V730" marker-end="url(#a)"/>
+  <path class="line" d="M340 782H390V139H430" marker-end="url(#a)"/>
+  <path class="line" d="M690 139H730" marker-end="url(#a)"/>
+  <path class="line" d="M860 166V182H560V198" marker-end="url(#a)"/>
+  <path class="line" d="M690 225H730" marker-end="url(#a)"/>
+  <path class="line" d="M860 252V268H560V284" marker-end="url(#a)"/>
+  <path class="line" d="M690 311H730" marker-end="url(#a)"/>
+  <path class="line" d="M860 338V354H560V370" marker-end="url(#a)"/>
+  <path class="line" d="M690 397H730" marker-end="url(#a)"/>
+  <path class="line" d="M860 424V440H560V456" marker-end="url(#a)"/>
+  <path class="line" d="M690 483H730" marker-end="url(#a)"/>
+  <path class="line" d="M860 510V526H560V542" marker-end="url(#a)"/>
+  <path class="line" d="M690 569H730" marker-end="url(#a)"/>
+  <path class="line" d="M860 596V640" marker-end="url(#a)"/>
+  <path class="line" d="M990 139H1040" marker-end="url(#a)"/>
+  <path class="line" d="M990 160H1015V237H1040" marker-end="url(#a)"/>
+  <path class="line" d="M990 669H1015V331H1040" marker-end="url(#a)"/>
+  <path class="line" d="M1210 362V394" marker-end="url(#a)"/>
+  <path class="line" d="M1210 456V488" marker-end="url(#a)"/>
+  <path class="line" d="M1210 550V582" marker-end="url(#a)"/>
+  <path class="fail" d="M360 229H405V823H430" marker-end="url(#r)"/>
+  <path class="fail" d="M710 698V760" marker-end="url(#r)"/>
+  <path class="line" d="M360 560H1015V823H1040" marker-end="url(#a)"/>
+</svg>

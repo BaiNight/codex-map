@@ -6,4 +6,3 @@
 - 目录契约：`docs/agents/**` + 根目录 `AGENTS.md`
 - `mode=flows` 两步协议：propose 候选 → 用户拍板 → deep
 - `mode=full` 由主代理探测后并行子代理写图 / surfaces / data / 域索引
-- 旧名 `docs-bootstrap` / `docs-auto-sync` 视为别名

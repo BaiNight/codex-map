@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 680" width="1080" height="680">
+  <defs>
+    <style>
+      .t { fill: #e6edf3; font: 700 18px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .s { fill: #8b949e; font: 11px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .n { fill: #e6edf3; font: 600 12px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .d { fill: #8b949e; font: 10px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .e { fill: #8b949e; font: 10px "Segoe UI","Microsoft YaHei",sans-serif; }
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#484f58"/>
+    </marker>
+  </defs>
+  <rect width="1080" height="680" fill="#0d1117"/>
+  <text class="t" x="28" y="32">expense · custom-import</text>
+  <text class="s" x="28" y="52">文件登记走 CLI；表单当场落明细</text>
+
+  <rect x="40" y="80" width="240" height="56" rx="8" fill="#12233a" stroke="#388bfd"/>
+  <text class="n" x="52" y="106">HTTP 导入入口</text>
+<text class="d" x="52" y="122">actionImport / expenseImport</text>
+  <polygon points="430,62 538,108 430,154 322,108" fill="#161b22" stroke="#d29922"/>
+  <text class="n" text-anchor="middle" x="430" y="106">文件 or 表单</text>
+
+  <rect x="40" y="220" width="250" height="56" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="52" y="246">Slice::handler + store</text>
+<text class="d" x="52" y="262">status=PENDING_REVIEW</text>
+  <rect x="40" y="320" width="250" height="56" rx="8" fill="#12233a" stroke="#388bfd"/>
+  <text class="n" x="52" y="346">CLI CustomImportFeeHandler</text>
+<text class="d" x="52" y="362">捞 import_status=0</text>
+  <rect x="40" y="420" width="250" height="56" rx="8" fill="#271700" stroke="#db6d28"/>
+  <text class="n" x="52" y="446">OSS getObject</text>
+<text class="d" x="52" y="462">Yii::$app->oss</text>
+  <rect x="40" y="520" width="250" height="56" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="52" y="546">DetailService::import</text>
+<text class="d" x="52" y="562">逐行 setAttributes</text>
+  <rect x="520" y="220" width="250" height="56" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="532" y="246">Slice::docImport</text>
+<text class="d" x="532" y="262">事务 + importDetail</text>
+  <rect x="520" y="360" width="280" height="56" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="532" y="386">写 expense_customize_import</text>
+<text class="d" x="532" y="402">expense_customize_detail</text>
+  <rect x="520" y="500" width="280" height="56" rx="8" fill="#271700" stroke="#db6d28"/>
+  <text class="n" x="532" y="526">MQ import_report</text>
+<text class="d" x="532" y="542">仅表单路径</text>
+  <path d="M 280 108 L 322 108" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 430 154 L 430 188 L 165 188 L 165 220" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <text class="e" x="190" y="182">文件</text>
+  <path d="M 430 154 L 430 188 L 645 188 L 645 220" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <text class="e" x="500" y="182">表单</text>
+  <path d="M 165 276 L 165 320" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 165 376 L 165 420" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 165 476 L 165 520" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 290 548 L 500 548 L 500 388 L 520 388" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 645 276 L 645 360" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 645 416 L 645 500" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+</svg>

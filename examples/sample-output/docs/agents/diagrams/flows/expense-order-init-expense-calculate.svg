@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" width="1000" height="700">
+  <defs>
+    <style>
+      .t { fill: #e6edf3; font: 700 18px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .s { fill: #8b949e; font: 11px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .n { fill: #e6edf3; font: 600 12px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .d { fill: #8b949e; font: 10px "Segoe UI","Microsoft YaHei",sans-serif; }
+      .e { fill: #8b949e; font: 10px "Segoe UI","Microsoft YaHei",sans-serif; }
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#484f58"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="700" fill="#0d1117"/>
+  <text class="t" x="28" y="32">expense · order-init-expense-calculate</text>
+  <text class="s" x="28" y="52">Consumer 按 platform_id 选 initialize Strategy</text>
+
+  <rect x="250" y="70" width="280" height="54" rx="8" fill="#12233a" stroke="#388bfd"/>
+  <text class="n" x="262" y="96">Consumer::execute</text>
+<text class="d" x="262" y="112">消息 orderId</text>
+  <polygon points="390,154 498,200 390,246 282,200" fill="#161b22" stroke="#d29922"/>
+  <text class="n" text-anchor="middle" x="390" y="198">订单存在?</text>
+
+  <polygon points="390,270 520,320 390,370 260,320" fill="#161b22" stroke="#d29922"/>
+  <text class="n" text-anchor="middle" x="390" y="318">分叉 platform_id</text>
+<text class="d" text-anchor="middle" x="390" y="334">initialize Provider</text>
+  <rect x="230" y="410" width="320" height="54" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="242" y="436">Strategy::handler + Manager::run</text>
+<text class="d" x="242" y="452">Pipeline through chain</text>
+  <rect x="230" y="510" width="320" height="54" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text class="n" x="242" y="536">OrderExpenseChangeEvent</text>
+<text class="d" x="242" y="552">RollupTask::run</text>
+  <rect x="230" y="610" width="320" height="54" rx="8" fill="#12261e" stroke="#3fb950"/>
+  <text class="n" x="242" y="636">写 order 利润字段</text>
+<text class="d" x="242" y="652">order_profit / income</text>
+  <rect x="680" y="410" width="260" height="54" rx="8" fill="#271700" stroke="#db6d28"/>
+  <text class="n" x="692" y="436">notify.immediatelyNotify</text>
+<text class="d" x="692" y="452">catch 后 ACK</text>
+  <path d="M 390 124 L 390 154" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 390 246 L 390 270" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <text class="e" x="400" y="260">是</text>
+  <path d="M 390 370 L 390 410" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 390 464 L 390 510" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 390 564 L 390 610" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <path d="M 550 437 L 680 437" fill="none" stroke="#484f58" stroke-width="1.4" marker-end="url(#ah)"/>
+  <text class="e" x="590" y="430">异常</text>
+</svg>
