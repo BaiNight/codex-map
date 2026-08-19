@@ -437,9 +437,9 @@ docs/agents/
 1. 按上表打开 references，未点到的不要打开
 2. 先按 `detect.md` 探测，再按对应 mode 文件做
 3. 自检与 summary 以 `quality.md` 为准
-```
+````
 
-注意：上面最外层是本 plan 的围栏；写入 SKILL.md 时，目录契约那块只保留一层 ` ```text ` 围栏。若复制后 YAML 或围栏损坏，按本 Task 的意图手工修到可被 Markdown 解析，**不要**借机加回旧段落。
+写入磁盘时保留目录契约里的 ` ```text ` 围栏。若复制后 YAML 损坏，按本 Task 意图修好，**不要**加回旧段落。
 
 - [ ] **Step 2: 行数必须 ≤ 150**
 
