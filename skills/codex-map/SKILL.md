@@ -25,7 +25,7 @@ description: >
 
 ## 参数
 
-解析用户消息（缺省如下）：
+解析用户消息（缺省如下）。参数用**空格**分隔，例如 `使用 codex-map mode=flows domain=order`；逗号也能识别，但对外示例一律写空格。
 
 - `mode`：`full`（默认）| `diagrams` | `surfaces` | `data` | `flows` | `entrypoint`
 - `system`（可选）：`auto`（默认）或任意短名（从 README / 包名 / 目录名探测，也可手写）  
@@ -243,7 +243,7 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 
 ```text
 请拍板：回复「就做 1」或「就做 <slug>」或
-使用 codex-map，mode=flows，domain=<域>，feature=<slug|自然语言>
+使用 codex-map mode=flows domain=<域> feature=<slug|自然语言>
 ```
 
 #### deep 产出（拍板后才写）

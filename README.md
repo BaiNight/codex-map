@@ -51,7 +51,7 @@ cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
 在**业务仓库**的 Agent 对话里说明：
 
 ```text
-使用 codex-map，mode=full
+使用 codex-map mode=full
 ```
 
 也可分步：`mode=diagrams` → `surfaces` → `data` → `entrypoint`。
@@ -59,19 +59,19 @@ cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
 梳理某一业务域的复杂功能时，分两步：
 
 ```text
-使用 codex-map，mode=flows，domain=<本仓库探测到的域>
+使用 codex-map mode=flows domain=<本仓库探测到的域>
 ```
 
 先给出 3～5 个候选，等你选定后再深写：
 
 ```text
-使用 codex-map，mode=flows，domain=<域>，feature=<功能名>
+使用 codex-map mode=flows domain=<域> feature=<功能名>
 ```
 
 检查文档是否过期：
 
 ```text
-使用 codex-drift，相对 main 检查文档漂移
+使用 codex-drift 相对 main 检查文档漂移
 ```
 
 | 参数 | 默认 | 说明 |
