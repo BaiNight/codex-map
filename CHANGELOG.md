@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.7 — 2026-08-19
+
+- 流程图按功能建目录 `diagrams/flows/{domain}/{slug}/`，文件名 `01-overview.svg`、`02-{phase}.svg` 连续编号
+
 ## 0.1.6 — 2026-08-19
 
 - 流程图改为 ProcessOn 风：白底、橙边菱形、蓝边步骤、蓝箭头；禁止黑底白框和大色块填满

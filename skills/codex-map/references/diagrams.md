@@ -135,11 +135,15 @@
 
 长业务按 `modes-flows.md`：**L1 全貌 + 按阶段 L2**。图上节点必须以 `S1` / `S3.1` 开头，与深页步骤表同一套编号。
 
+目录：`docs/agents/diagrams/flows/{domain}/{slug}/`。文件名 `{nn}-{kind}.svg`，`01` 起连续编号。
+
 | 层 | 文件名 | 画什么 | 节点 |
 |---|---|---|---|
-| L1 | `{domain}-{slug}-overview.svg` | 主步骤，阶段不展开 | 5～9 |
-| L2 | `{domain}-{slug}-{phase}.svg` | 只展开一个阶段 | 8～14 |
-| L3 | `{domain}-{slug}-{phase}-detail.svg` | 仅当 L2 仍超（全功能 ≤ 1 张） | 4～8 |
+| L1 | `01-overview.svg` | 主步骤，阶段不展开 | 5～9 |
+| L2 | `{nn}-{phase}.svg` | 只展开一个阶段 | 8～14 |
+| L3 | `{nn}-{phase}-detail.svg` | 仅当 L2 仍超（全功能 ≤ 1 张） | 4～8 |
+
+禁止把 SVG 平铺在 `diagrams/flows/` 根目录。
 
 - **主路径单列**；每张图最多 1 条旁路
 - L1 不要收成「入口 → 编排 → 写库」三框，但也不要画出算子/每张表

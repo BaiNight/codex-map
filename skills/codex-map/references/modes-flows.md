@@ -140,18 +140,29 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 
 | 条件 | 出图 |
 |---|---|
-| 主步骤 ≤ 9 **且** 有效阶段 < 3 | 只出 **L1** `…-overview.svg` |
+| 主步骤 ≤ 9 **且** 有效阶段 < 3 | 只出 **L1** `01-overview.svg` |
 | 主步骤 > 9 **或** 有效阶段 ≥ 3 | L1 + 每个「判断/写库 ≥ 3」的阶段一张 **L2** |
 | 某一阶段仍超 L2 上限（宽 pipeline / 宽 V） | 该阶段再出 **一张** L3，全功能最多 1 张 L3 |
 | L2 最多 | **4** 张。其余阶段只留步骤表 |
 
-路径：
+路径（按功能建目录，文件名带序号）：
 
-- L1：`diagrams/flows/{domain}-{slug}-overview.svg`
-- L2：`diagrams/flows/{domain}-{slug}-{phase}.svg`（`phase` 用上表 slug）
-- L3（若有）：`diagrams/flows/{domain}-{slug}-{phase}-detail.svg`
-- 可选同源：同名 `.mmd`（给 diff / 再渲染）；**深页不要用 mermaid 围栏代替 SVG**
-- 不再写无后缀的 `{domain}-{slug}.svg`。旧文件不删，深页只链新文件
+```text
+docs/agents/diagrams/flows/{domain}/{slug}/
+  01-overview.svg
+  02-entry.svg
+  03-compute.svg
+  04-compute-detail.svg    ← 仅当该阶段有 L3
+  05-persist.svg
+```
+
+- 目录：`diagrams/flows/{domain}/{slug}/`。**禁止**把图直接铺在 `diagrams/flows/` 根下
+- 文件名：`{nn}-{kind}.svg`，`nn` 从 `01` 起连续递增、不跳号
+- `01-overview.svg` 固定为 L1
+- 其后按阶段顺序：`entry` → `branch` → `compute` → `persist` → `fail`（没有的阶段不占号）
+- L3 紧跟对应 L2：下一号写成 `{nn}-{phase}-detail.svg`
+- 可选同源：同目录同名 `.mmd`；**深页不要用 mermaid 围栏代替 SVG**
+- 旧的扁平文件（`{domain}-{slug}-*.svg`）不删，深页只链新目录
 
 ##### 步骤（深页前半）
 
@@ -161,14 +172,15 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
 - 复杂度 / 重要性：{分} / {分}
 - 一句话：
 - 入口：
-- L1 全貌：[../../diagrams/flows/{domain}-{slug}-overview.svg](../../diagrams/flows/{domain}-{slug}-overview.svg)
+- L1 全貌：[../../diagrams/flows/{domain}/{slug}/01-overview.svg](../../diagrams/flows/{domain}/{slug}/01-overview.svg)
 
 ### 阶段图
-| 阶段 | 覆盖步骤 | 图 |
-|---|---|---|
-| 接入 | S1–S2 | [L2](../../diagrams/flows/{domain}-{slug}-entry.svg) |
+| # | 文件 | 层 | 覆盖步骤 |
+|---|------|----|----------|
+| 01 | [01-overview.svg](../../diagrams/flows/{domain}/{slug}/01-overview.svg) | L1 | 全貌 |
+| 02 | [02-entry.svg](../../diagrams/flows/{domain}/{slug}/02-entry.svg) | L2 | S1–S2 |
 
-无 L2 时本表写「本功能仅 L1」，不要空链。
+无 L2 时本表只留 01 一行。禁止空链。按实际写出的文件填，序号与文件名前缀一致。
 
 ### 步骤
 | ID | 阶段 | 做什么 | 类::方法 | 路径 |
@@ -262,8 +274,8 @@ propose：按复杂度取 **Top 3～5** 进候选榜（不足则有多少列多�
    - 两种都禁止写细节页、画细图、深写 L/V/X
 7. **有 `domain=`，已拍板（deep）**：
    - 解析 `feature` / 自然语言到唯一 slug；对不上则再问，不深写
-   - 写 `flows/{domain}-{slug}.md` + L1 `…-overview.svg`；按规则补 L2（及至多 1 张 L3）
-   - 更新 `flows/{domain}.md` 该行状态为已深挖，链到 L1
+   - 写 `flows/{domain}-{slug}.md` + 目录 `diagrams/flows/{domain}/{slug}/`（`01-overview.svg` + 按序 L2/L3）
+   - 更新 `flows/{domain}.md` 该行状态为已深挖，链到深页与 `01-overview.svg`
    - **L 命中**：按本功能回写 `lifecycle.md`（其它 Status 只索引）
    - **V 命中**：更新 `variants/INDEX.md`（名 + 一句话 + 命中功能）
    - **X 命中**：按本功能回写 `contracts.md`

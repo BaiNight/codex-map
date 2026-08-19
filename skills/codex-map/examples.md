@@ -38,7 +38,7 @@
 
 或自然语言：`请生成 订单同步 详细文档与流程图`。
 
-深挖后看 `flows/{domain}-{slug}.md` 的 `S*` 步骤表，再打开 L1 `…-overview.svg`；长流程会多几张 `…-{phase}.svg`，不要指望一张细总图。
+深挖后看 `flows/{domain}-{slug}.md` 的 `S*` 步骤表，图在 `diagrams/flows/{domain}/{slug}/`：`01-overview.svg` 起按序编号。
 
 ## 入口文件
 

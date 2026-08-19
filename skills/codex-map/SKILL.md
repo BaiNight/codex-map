@@ -61,8 +61,8 @@ docs/agents/
   03-deep-dives/variants/INDEX.md
   03-deep-dives/contracts.md
   diagrams/*.svg
-  diagrams/flows/{domain}-{slug}-overview.svg
-  diagrams/flows/{domain}-{slug}-{phase}.svg
+  diagrams/flows/{domain}/{slug}/01-overview.svg
+  diagrams/flows/{domain}/{slug}/{nn}-{phase}.svg
 ```
 
 未命中的层不要创建对应文件。过期页标过期，不擅自删除。
