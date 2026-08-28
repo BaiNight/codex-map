@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.14 — 2026-08-28
+
+- `mode=full` 增加资产互校硬门、≤8 条核心链路、图内容 review、接口对外/内部与冒烟候选（只列不跑）
+- `AGENTS.md` 禁区/历史包袱禁止 AI 编造；候选线索只进 `forbidden-candidates.md` 且全部待确认
+- `mode=flows` propose 优先参考核心链路起点
+
 ## 0.1.13 — 2026-08-19
 
 - 探测主路径改为 composer 定包后查官网结构/Model 文档，再与仓库求交；换框架只加包名+官网行。laravel/thinkphp/yii2 专节降为官网失败时的离线兜底

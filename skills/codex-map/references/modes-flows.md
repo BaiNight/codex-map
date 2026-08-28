@@ -37,7 +37,9 @@
 
 #### 聚类
 
-从该域入口归并（`api-list` / `cli-and-consumers` / 打开的 controller、console、consumer）：
+从该域入口归并（`api-list` / `cli-and-consumers` / 打开的 controller、console、consumer）。
+
+若存在 `docs/agents/03-deep-dives/critical-paths.md`：**先读再聚类**。起点接口所属的功能在同分时优先进入 Top 3～5；禁止把链路表一行直接当成 slug，仍按入口归并。
 
 | 归并信号（命中任一即可合成一个功能） |
 |---|
@@ -50,14 +52,16 @@
 
 #### 重要性（过滤）
 
-| 分 | 信号（代码里真实存在才加） |
+| 分 | 信号（须在本仓库代码对得上；核心链路加分须该页存在） |
 |---:|---|
 | +2 | 能追到 F 编排 |
 | +2 | 有 L 或 V |
 | +1 | 有 X 或 MQ |
 | +1 | 同时有 HTTP 与 CLI/Consumer |
+| +1 | 该功能的入口出现在 `critical-paths.md` 的起点列（文件存在才加） |
 
-重要性 = 0：进「未展开」，不进候选榜。
+重要性 = 0：进「未展开」，不进候选榜。  
+例外：入口已在 `critical-paths.md` 起点列时，重要性至少记 1，进入打分，不进未展开。
 
 #### 复杂度（排序用）
 
@@ -268,7 +272,7 @@ docs/agents/diagrams/flows/{domain}/{slug}/
 4. **F 本仓库无**：不写 `flows/`、不画图；summary 后结束
 5. **无 `domain=`**：**不写** `flows/`、不画功能图；对话说明下一步 `mode=flows domain=<域>`；Summary `phase=n/a`；然后跳到更新 INDEX → Summary
 6. **有 `domain=`，未拍板（propose）**：
-   - 先读 `flows/{domain}.md`，按「已有候选页」表决定复用或重扫
+   - 先读 `critical-paths.md`（若存在），再读 `flows/{domain}.md`，按「已有候选页」表决定复用或重扫
    - **复用**：对话复述名单 → **停止** → Summary 标明 `phase=propose-reuse`、来源文件、候选 slug
    - **重扫 / 首次**：只该域，执行第 6 节聚类 + 打分；写 `flows/{domain}.md`（刷新时保留已深挖行）；对话给出候选并请拍板；**停止**；Summary 标明 `phase=propose`
    - 两种都禁止写细节页、画细图、深写 L/V/X

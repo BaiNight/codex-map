@@ -30,6 +30,7 @@ description: >
    - controllers / routes / 业务模块分组 → `docs/agents/01-domains/INDEX.md`、`docs/agents/02-surfaces/api-list.md`
    - console / commands / consumer → `docs/agents/02-surfaces/cli-and-consumers.md`
    - models → `docs/agents/03-deep-dives/data-model.md`（以 Model 为准，忽略 migrations）
+   - 核心链路起点 → `docs/agents/03-deep-dives/critical-paths.md`
    - service / handler / task / slice（及本仓库等价编排目录） → `docs/agents/03-deep-dives/flows/`、`layers.md`、`docs/agents/diagrams/flows/*.svg`
    - `*Status*` / `*State*` enums → `docs/agents/03-deep-dives/lifecycle.md`
    - strategy / adapter / chain / provider / plugin → `docs/agents/03-deep-dives/variants/`

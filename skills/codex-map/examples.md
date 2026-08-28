@@ -8,7 +8,7 @@
 使用 codex-map mode=full
 ```
 
-默认不写 `flows/`。要对某域深挖，再跑 `mode=flows domain=...`。
+默认不写 `flows/`。会对齐接口与模型，写出 ≤8 条核心链路。`AGENTS.md` 禁区两节留空（或保留人写），不对团队编造。要对某域深挖，再跑 `mode=flows domain=...`。
 
 ## 只重生图
 
