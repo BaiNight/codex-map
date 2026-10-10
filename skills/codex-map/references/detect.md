@@ -124,6 +124,7 @@
 
 - 目录：`app/Models`、`app/*/Models`、`app/*/Model`（以实有为准）
 - 只收继承 `Illuminate\Database\Eloquent\Model` 的类
+- `FormRequest` / API Resource / 手写 DTO **不是** Model，字段写在 api-list
 - 表名：`$table`；未声明则标「待确认」（不要按类名脑补）
 - 字段：`$fillable` / `$guarded` / `$casts` / 属性注释
 - 关系：`hasMany` `hasOne` `belongsTo` `belongsToMany` `morphTo` 等
@@ -190,6 +191,7 @@
 
 - 目录：`app/model`、`app/*/model`（以实有为准）
 - 只收继承 `think\Model` 的类
+- `validate/` 校验类 **不是** Model，入参写在 api-list
 - 表名：`$table`（全名）或 `$name`（无前缀）；都未声明标「待确认」
 - 字段：`$schema` / `$type` / 属性注释
 - 关系：`hasOne` `hasMany` `belongsTo` 等
@@ -249,6 +251,7 @@
 
 - 目录：本仓库实有的 `backend/models`、`common/models`、`models/`（不要默认只有一个）
 - 表名：`tableName()`
+- 无 `tableName()` 的 `yii\base\Model`（表单）**不是** 表，入参写在 api-list
 - 字段：`rules()` / `attributeLabels()` / 属性注释
 - 关系：AR 关系方法
 - 禁止把 Eloquent `$fillable` 写进 Yii 文档
@@ -282,7 +285,7 @@
 - 域：顶层业务包、`src/` / `app/` 下的模块名、路由前缀（以实有为准）
 - HTTP：实际 controller 目录 + 路由文件（名称以仓库为准）
 - 异步：`command*`、`job*`、consumer、MQ 配置；没有则写无
-- Model：本仓库 Model 目录里能看到的表名/字段/关系声明；不要套另外三节的 API 名称
+- Model：本仓库 Model 目录里能看到的表名/字段/关系声明；不要套另外三节的 API 名称；Request/DTO/表单类不进模型页
 - F/L/V/X：只用第 3 节行为 + 文件名模式（`*Service*` `*Client*` `*Status*`）。找不到就「本仓库无」或「待确认」
 - 禁止回退套 laravel / thinkphp / yii2 节的目录
 
@@ -328,3 +331,5 @@ HTTP 见 [../02-surfaces/api-list.md](../02-surfaces/api-list.md)。CLI / Consum
 ```
 
 职责必须来自本轮打开的 README / 模块注释 / 控制器目录名；推不出写 `待确认`，禁止用其它仓库的外号。
+
+域数量 **>8**：H1 后先放「分组锚点索引表」（按子应用 / 顶层目录分组），再按组写域表。实有域全列，禁止为缩短而删行。缺口节遵守 `quality.md`「清单上限」（≤10 条引用）。

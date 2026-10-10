@@ -3,21 +3,21 @@
 默认即 `full`。执行前已读 `detect.md` 与 `quality.md`。
 工作量大，**必须**用主代理编排 + 子代理并行，禁止主代理一人顺序干完所有扫描与写文件。
 
-逻辑顺序：探测 →（并行）图 / surfaces / data / 域索引 → 核心链路 + 互校 →（仅当有 `domain=` 才 propose）→ entrypoint → summary。  
+逻辑顺序：探测 →（并行）图 / surfaces / data / 域索引 → 核心链路 + 互校 + 候选禁区 + 风险地带 →（仅当有 `domain=` 才 propose）→ entrypoint（含怎么跑摘录）→ summary。  
 **不要**在 full 里对某域自动 deep。无 `domain=`：**不写** `flows/`。若消息带了 `domain=` 且未拍板：清单类做完后对该域只做 propose 并停住。
 
 子代理 prompt **不要**粘贴 `modes-inventory.md` / `modes-flows.md` 全文；只写「按某文件的某节做」+ 本角色允许写的路径。
 
 ## 主代理职责
 
-主代理只做：探测、分发、合并 summary、核心链路、互校、entrypoint、对用户说话。  
+主代理只做：探测、分发、合并 summary、核心链路、互校、候选禁区、风险地带、entrypoint、对用户说话。  
 子代理用 Task（`generalPurpose` 或 `explore` 按任务选）；**同一轮消息里并行发起**互不依赖的多个 Task。
 
 ## 写文件边界（禁止交叉写）
 
 | 角色 | 只允许写 |
 |---|---|
-| 主代理 | `layers.md`（探测结果）、`critical-paths.md`、`forbidden-candidates.md`、互校改动、`INDEX.md`、`AGENTS.md`（及可选 `CLAUDE.md`）、最终 summary |
+| 主代理 | `layers.md`（探测结果）、`critical-paths.md`、`forbidden-candidates.md`、`risk-zones.md`、互校改动、`INDEX.md`、`AGENTS.md`（及可选 `CLAUDE.md`）、最终 summary |
 | 子代理 A · diagrams | `docs/agents/diagrams/architecture.svg`、`module-deps.svg`、`external-deps.svg` |
 | 子代理 B · surfaces | `docs/agents/02-surfaces/api-list.md`、`cli-and-consumers.md` |
 | 子代理 C · data | `docs/agents/03-deep-dives/data-model.md`、`diagrams/data-model-er.svg` |
@@ -43,15 +43,17 @@
 - C：读 `diagrams.md` **企业分层风**，按 `modes-inventory.md` 的 `mode=data` 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
 - D：按 `detect.md` 的「写 01-domains/INDEX.md」写短索引  
 
-每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。A / C 还必须写「先读 `references/diagrams.md` 再画 SVG；全景/ER 用企业分层风，禁止 `#0d1117` 深底，禁止画成流程图白框」。A 还必须写「三张图按 diagrams.md 内容 review，漏模块/反依赖/缺一类外部依赖则重画」。B 还必须写「api-list 要有暴露列（对外/内部）和 ≤5 条冒烟候选，只列不 curl」。
+每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。A / C 还必须写「先读 `references/diagrams.md` 再画 SVG；全景/ER 用企业分层风，禁止 `#0d1117` 深底，禁止画成流程图白框」。A 还必须写「三张图按 diagrams.md 内容 review，漏模块/反依赖/缺一类外部依赖则重画」。B 还必须写「api-list 要有暴露列（对外/内部）和 ≤5 条冒烟候选，只列不 curl；入参/返回写 Request/DTO 短名，不要当表」。C 还必须写「只扫 Model，禁止 migrations/SQL；Request/Form/DTO/Resource 不进 data-model」。D 还必须写「域 >8 先分组锚点，禁止删实有域」。
 
-**波次 2 · 主代理：核心链路 + 互校 + 候选禁区（等波次 1）**
+**波次 2 · 主代理：核心链路 + 互校 + 候选禁区 + 风险地带（等波次 1）**
 
 顺序固定，不可跳过互校表：
 
 1. 按 `quality.md`「核心链路」+ `modes-inventory.md` 模板写 `docs/agents/03-deep-dives/critical-paths.md`（≤8）。真源是本轮 api-list、data-model、域索引；不跑测试、不 curl
-2. 按 `quality.md`「资产互校」对照 api-list ↔ data-model ↔ 三图 ↔ 域索引 ↔ 核心链路。不一致**只改文档**。把对照表写入即将交给 entrypoint 的缺口清单
-3. 定点 Grep（及可选 git log）写 `forbidden-candidates.md`（≤8，全标待确认）。**禁止**把候选写进 `AGENTS.md` 禁区正文
+2. 按 `quality.md`「资产互校」+「DTO 与 Model」对照 api-list ↔ data-model ↔ 三图 ↔ 域索引 ↔ 核心链路。传输层类型不要求进模型页。不一致**只改文档**。把对照表写入即将交给 entrypoint 的缺口清单（≤10）
+3. 定点 Grep（及可选 git log）一次扫完，拆成两页：**禁止**把候选写进 `AGENTS.md` 禁区正文
+   - `forbidden-candidates.md`（≤8，注释/提交标题，全标待确认）
+   - `risk-zones.md`（≤10，兼容层/双写/开关/废弃，全标待确认；同一 path 不与上一页重复；扫不到写「本轮未见」）
 4. 未闭环缺口：不得在后续 summary 写「已自洽」
 
 若仓库已有 `wiki/`、`docs/ops/` 等运维原文，用链接指出，不镜像进 agents。

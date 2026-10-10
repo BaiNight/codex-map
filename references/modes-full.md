@@ -1,0 +1,89 @@
+# full mode 子代理编排
+
+默认即 `full`。执行前已读 `detect.md` 与 `quality.md`。
+工作量大，**必须**用主代理编排 + 子代理并行，禁止主代理一人顺序干完所有扫描与写文件。
+
+逻辑顺序：探测 →（并行）图 / surfaces / data / 域索引 → 核心链路 + 互校 + 候选禁区 + 风险地带 →（仅当有 `domain=` 才 propose）→ entrypoint（含怎么跑摘录）→ summary。  
+**不要**在 full 里对某域自动 deep。无 `domain=`：**不写** `flows/`。若消息带了 `domain=` 且未拍板：清单类做完后对该域只做 propose 并停住。
+
+## refresh 闸门（先于波次）
+
+先按 `quality.md`「已有页不整页重写」定 `refresh`。
+
+- `off`：波次 1 只派目标文件还不存在的子代理。A/B/C/D 的文件都在则不派。波次 2 里已有的 critical-paths、risk-zones、forbidden-candidates 不重写，也不重跑互校。波次 4 的 `AGENTS.md` 只补「先查哪里」。
+- `cited`：不跑波次 1～3。只核对已有深页和核心链路的 `路径:行号`，对不上标 `已过期`。不重画图。
+- `force`：按下面波次整页重写。禁区、历史包袱、深页里的 `## 人工补充` 仍不覆盖。
+
+点名了 `feature=`：full 仍然不做 deep。summary 提示单独跑 `mode=flows`。
+
+子代理 prompt **不要**粘贴 `modes-inventory.md` / `modes-flows.md` 全文；只写「按某文件的某节做」+ 本角色允许写的路径。
+
+## 主代理职责
+
+主代理只做：探测、分发、合并 summary、核心链路、互校、候选禁区、风险地带、entrypoint、对用户说话。  
+子代理用 Task（`generalPurpose` 或 `explore` 按任务选）；**同一轮消息里并行发起**互不依赖的多个 Task。
+
+## 写文件边界（禁止交叉写）
+
+| 角色 | 只允许写 |
+|---|---|
+| 主代理 | `layers.md`（探测结果）、`critical-paths.md`、`forbidden-candidates.md`、`risk-zones.md`、互校改动、`INDEX.md`、`AGENTS.md`（及可选 `CLAUDE.md`）、最终 summary |
+| 子代理 A · diagrams | `docs/agents/diagrams/architecture.svg`、`module-deps.svg`、`external-deps.svg` |
+| 子代理 B · surfaces | `docs/agents/02-surfaces/api-list.md`、`cli-and-consumers.md` |
+| 子代理 C · data | `docs/agents/03-deep-dives/data-model.md`、`diagrams/data-model-er.svg` |
+| 子代理 D · domains | `docs/agents/01-domains/**`（短索引；不写深潜） |
+| 主代理或单子代理 · flows-propose | 仅当有 `domain=` 且未拍板：候选表；**停住等用户**，不派 deep |
+
+禁止两个子代理写同一文件。子代理**禁止**改业务代码、禁止跑 deep、禁止改 `AGENTS.md`（留给 entrypoint）。
+
+## 波次
+
+**波次 0 · 主代理（串行，必先）**
+
+1. 按 `detect.md` 做开跑前探测：称谓 / 剖面 / 域列表 / 四层 F/L/V/X。结构查询按 `detect.md`「知识图谱」由主代理做一次（`list_projects`，未索引才 `index_repository mode=fast`）
+2. 写 `layers.md`
+3. 把探测摘要（system、剖面、官网来源、域列表、关键路径、四层判定、图谱 project 名或「未使用」）写进每个子代理 prompt；**只贴本轮官网求交后的路径**，不要贴其它框架离线节。子代理**不要**重做全库探测，**不要**再 `index_repository`
+
+**波次 1 · 并行（同一轮发起）**
+
+同时派 A + B + C + D：
+
+- A：读 `diagrams.md` **企业分层风**（不要用流程图那套白底描边），按 `modes-inventory.md` 的 `mode=diagrams` 写三张全景图；**必须**跑 `diagrams.md` 内容 review，不过则重画  
+- B：按 `modes-inventory.md` 的 `mode=surfaces` 写 api-list + cli-and-consumers；**跳过** surfaces 中写 `01-domains` 的步骤（由 D 写，禁止交叉）  
+- C：读 `diagrams.md` **企业分层风**，按 `modes-inventory.md` 的 `mode=data` 写 data-model + ER（高价值域用探测域里入口最多的，或用户 `domain=`）  
+- D：按 `detect.md` 的「写 01-domains/INDEX.md」写短索引  
+
+每个子代理 prompt 必须包含：仓库根路径、探测摘要、`quality.md` 硬约束摘要、**只写哪些文件**、完成后返回「写入文件列表 + 一句话摘要 + 需人工确认」。A / C 还必须写「先读 `references/diagrams.md` 再画 SVG；全景/ER 用企业分层风，禁止 `#0d1117` 深底，禁止画成流程图白框」。A 还必须写「三张图按 diagrams.md 内容 review，漏模块/反依赖/缺一类外部依赖则重画」。B 还必须写「api-list 要有暴露列（对外/内部）和 ≤5 条冒烟候选，只列不 curl；入参/返回写 Request/DTO 短名，不要当表」。C 还必须写「只扫 Model，禁止 migrations/SQL；Request/Form/DTO/Resource 不进 data-model」。D 还必须写「域 >8 先分组锚点，禁止删实有域」。
+
+**波次 2 · 主代理：核心链路 + 互校 + 候选禁区 + 风险地带（等波次 1）**
+
+顺序固定，不可跳过互校表：
+
+1. 按 `quality.md`「核心链路」+ `modes-inventory.md` 模板写 `docs/agents/03-deep-dives/critical-paths.md`（≤8）。真源是本轮 api-list、data-model、域索引；不跑测试、不 curl
+2. 按 `quality.md`「资产互校」+「DTO 与 Model」对照 api-list ↔ data-model ↔ 三图 ↔ 域索引 ↔ 核心链路。传输层类型不要求进模型页。不一致**只改文档**。把对照表写入即将交给 entrypoint 的缺口清单（≤10）
+3. 定点 Grep（及可选 git log）一次扫完，拆成两页：**禁止**把候选写进 `AGENTS.md` 禁区正文
+   - `forbidden-candidates.md`（≤8，注释/提交标题，全标待确认）
+   - `risk-zones.md`（≤10，兼容层/双写/开关/废弃，全标待确认；同一 path 不与上一页重复；扫不到写「本轮未见」）
+4. 未闭环缺口：不得在后续 summary 写「已自洽」
+
+若仓库已有 `wiki/`、`docs/ops/` 等运维原文，用链接指出，不镜像进 agents。
+
+**波次 3 · flows（串行，等波次 2；可跳过）**
+
+- 无 `domain=`：**跳过**，不写 `flows/`；summary 提示下一步 `mode=flows domain=<域>`  
+- 有 `domain=` 且未拍板：主代理按 `modes-flows.md` 做 propose（**先读本轮 `critical-paths.md`**；已有等待中的候选页则只复述）→ **停住**；波次 4 仍做 entrypoint（不含 deep）  
+- 有 `feature=`：本轮 full **不做 deep**；summary 提示用户单独再跑 `codex-map mode=flows` deep（避免 full 与细挖抢上下文）
+
+**波次 4 · 主代理 entrypoint + summary**
+
+按 `modes-inventory.md` 的 `mode=entrypoint`；汇总各子代理返回值写成总 summary（标明哪些子代理跑了、写了什么）。summary 字段以 `quality.md` 模板为准。
+
+## 子代理失败
+
+- 某一路失败：主代理可单路重试 1 次；仍失败则 summary 标缺口，不阻塞其它已成功文件  
+- 禁止为「省事」改回主代理独自全量串行，除非环境无 Task 工具（此时 summary 写「未并行，原因：无 Task」）
+
+## 单 mode 是否并行
+
+- `mode=diagrams|domains|surfaces|data|entrypoint|flows`：默认主代理直接做，**不**强制子代理  
+- 仅当用户明确要求「并行 / 用 subagent」且任务可拆（例如 surfaces 按域拆）时再拆；拆时仍遵守写文件边界

@@ -4,16 +4,18 @@ description: >
   Generate or regenerate AI-readable documentation under docs/agents/ and the
   root AGENTS.md entrypoint for the current repository. Use when bootstrapping
   AI docs, rebuilding architecture diagrams, API/CLI/consumer inventories,
-  data-model pages, a ≤8 core-path shortlist, flow/lifecycle/variant/contract
-  deep-dives, per-domain feature shortlists (propose then wait), deep feature
-  docs and flowcharts after the user picks a feature, or regenerating
-  AGENTS.md/INDEX.md. Cross-checks inventories before claiming completeness.
-  Supports mode=full|diagrams|domains|surfaces|data|flows|entrypoint, optional domain=
-  (project-discovered), optional feature= slug or natural language, optional
-  system=auto|<short-name>. For mode=full (default), orchestrates parallel
-  subagents after repo detection. Writes only docs/agents/** and AGENTS.md
-  (optional CLAUDE.md). For read-only drift checks use
-  codex-drift, not this skill.
+  data-model pages, a ≤8 core-path shortlist, a ≤10 unconfirmed risk-zone
+  shortlist, static how-to-run excerpts from README/compose, flow/lifecycle/
+  variant/contract deep-dives, per-domain feature shortlists (propose then wait),
+  deep feature docs and flowcharts after the user picks a feature, or
+  regenerating AGENTS.md/INDEX.md. Cross-checks inventories before claiming
+  completeness; keeps Request/DTO out of the model page; caps recommendation
+  lists. Supports mode=full|diagrams|domains|surfaces|data|flows|entrypoint,
+  optional domain= (project-discovered), optional feature= slug or natural
+  language, optional system=auto|<short-name>. For mode=full (default),
+  orchestrates parallel subagents after repo detection. Writes only
+  docs/agents/** and AGENTS.md (optional CLAUDE.md). For read-only drift
+  checks use codex-drift, not this skill.
 ---
 
 # Codex Map
@@ -45,6 +47,7 @@ description: >
 7. `AGENTS.md` ≤ 300 行；详情只放相对链接
 8. `flows` 的 propose 阶段必须停住等拍板；判断不清标「需人工确认」
 9. 「禁区」「历史包袱」禁止编造实文；资产互校未过不得宣称完整
+10. 怎么跑只抄仓库已有命令；DTO/Request 不进 data-model；清单超上限必须砍
 
 ## 目录契约
 
@@ -58,6 +61,7 @@ docs/agents/
   03-deep-dives/data-model.md
   03-deep-dives/critical-paths.md
   03-deep-dives/forbidden-candidates.md
+  03-deep-dives/risk-zones.md
   03-deep-dives/layers.md
   03-deep-dives/flows/{domain}.md
   03-deep-dives/flows/{domain}-{slug}.md

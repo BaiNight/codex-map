@@ -8,7 +8,7 @@
 使用 codex-map mode=full
 ```
 
-默认不写 `flows/`。会对齐接口与模型，写出 ≤8 条核心链路。`AGENTS.md` 禁区两节留空（或保留人写），不对团队编造。要对某域深挖，再跑 `mode=flows domain=...`。
+默认不写 `flows/`。会对齐接口与模型（Request/DTO 留在 api-list，不进模型页），写出 ≤8 条核心链路和 ≤10 条待确认风险地带，从 README/compose 抄怎么跑。`AGENTS.md` 禁区两节留空（或保留人写），不对团队编造。要对某域深挖，再跑 `mode=flows domain=...`。
 
 ## 只重生图
 
@@ -50,7 +50,7 @@
 使用 codex-map mode=entrypoint
 ```
 
-需要 Claude Code 双写时加 `dual_claude=true`。
+「怎么跑」只从 README / compose / 已有脚本抄命令和端口，不装依赖、不启动应用。需要 Claude Code 双写时加 `dual_claude=true`。
 
 ## 对账
 

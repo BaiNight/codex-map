@@ -1,98 +1,53 @@
-# Codex Map
+# codex-map
 
-给 Agent 画代码地图：探测当前仓库，生成可被 AI 直接阅读的静态文档（`docs/agents/` + `AGENTS.md`）。
+为当前仓库生成给 Agent 读的静态文档：根上的 `AGENTS.md`，以及 `docs/agents/` 里的域索引、接口清单、全景图和按功能折叠的流程图。
 
-这是 **Cursor / Claude Code 的 Agent Skill**，不是命令行工具。装到业务仓库后，在对话里点名使用即可。
+人看本文件。Agent 执行时只读 `SKILL.md`，再按需打开 `references/`。不要把本文件当操作手册喂给 Agent。
 
-## 两个 Skill
+规范：[Agent Skills](https://agentskills.io/specification)。`name` 与目录名同为 `codex-map`。
 
-| Skill | 做什么 | 写文件？ |
-|---|---|---|
-| [`codex-map`](skills/codex-map/SKILL.md) | 生成架构图、接口与命令清单、数据模型、功能流程与流程图 | 只写 `docs/agents/**`、`AGENTS.md`（可选再写一份 `CLAUDE.md`） |
-| [`codex-drift`](skills/codex-drift/SKILL.md) | 对照代码变更，报告文档是否过期 | **只读**，不改任何文件 |
+## 目录
 
-`codex-map` 不修改业务源码。从代码推不出的内容会标「待确认」，不会编造。
-
-## 示例产出（临时）
-
-一次真实生成结果放在 [examples/](examples/README.md)，方便对照成品。看完后删除 `examples/` 即可。
-
-## 安装
-
-克隆本仓库后，把两个 skill 目录拷到业务仓库（或个人全局 skill 目录）。
-
-```bash
-git clone https://github.com/BaiNight/codex-map.git
+```text
+codex-map/
+├── README.md                 # 人
+├── SKILL.md                  # Agent 入口
+└── references/
+    ├── detect.md             # 探测栈、域、四层
+    ├── quality.md            # 硬约束、行号、增量更新
+    ├── modes-full.md         # mode=full 的编排
+    ├── modes-inventory.md    # 清单类 mode
+    ├── modes-flows.md        # 先候选，再深挖
+    ├── diagrams.md           # 全景 SVG 与 flow.html
+    └── examples.md           # 调用例句
 ```
 
-**Cursor（项目内）：**
+没有 `scripts/` 和 `assets/`。这个技能不靠脚本生成文档。
 
-```bash
-cp -r codex-map/skills/codex-map   <业务仓库>/.cursor/skills/
-cp -r codex-map/skills/codex-drift <业务仓库>/.cursor/skills/
-```
+## 怎么用
 
-**Claude Code（项目内）：**
-
-```bash
-cp -r codex-map/skills/codex-map   <业务仓库>/.claude/skills/
-cp -r codex-map/skills/codex-drift <业务仓库>/.claude/skills/
-```
-
-**个人全局（所有项目可用）：**
-
-- Cursor：`~/.cursor/skills/`（Windows：`%USERPROFILE%\.cursor\skills\`）
-- Claude Code：`~/.claude/skills/`
-
-同样拷入 `codex-map` 与 `codex-drift` 两个目录。
-
-## 用法
-
-在**业务仓库**的 Agent 对话里说明：
+在业务仓库里说：
 
 ```text
 使用 codex-map mode=full
+使用 codex-map mode=flows domain=order
+使用 codex-map mode=flows domain=order feature=order-sync
 ```
 
-默认画出架构图、接口清单、数据模型和域索引，写出 ≤8 条核心链路，**不写**流程深挖。要对某域调研，再跑下面的 `mode=flows`。
+更多例句在 `references/examples.md`。
 
-也可分步：`mode=diagrams` → `surfaces`（同时写 `01-domains`）→ `data` → `entrypoint`。
-
-已跑完 surfaces 但缺 `01-domains` 时，不必重扫 API：
-
-```text
-使用 codex-map mode=domains
-```
-
-梳理某一业务域的复杂功能时，分两步：
-
-```text
-使用 codex-map mode=flows domain=<本仓库探测到的域>
-```
-
-先给出 3～5 个候选，等你选定后再深写：
-
-```text
-使用 codex-map mode=flows domain=<域> feature=<功能名>
-```
-
-检查文档是否过期：
-
-```text
-使用 codex-drift 相对 main 检查文档漂移
-```
-
-| 参数 | 默认 | 说明 |
+| 参数 | 缺省 | 作用 |
 |---|---|---|
-| `mode` | `full` | `full` \| `diagrams` \| `domains` \| `surfaces` \| `data` \| `flows` \| `entrypoint` |
-| `system` | `auto` | 系统显示名；可省略，由仓库 README / 包名 / 目录名推断 |
-| `domain` | 无 | 只处理当前仓库里探测到的某一个业务域 |
-| `feature` | 无 | 指定要深写的功能；未指定时只出候选，不自动深写 |
-| `dual_claude` | 关 | 为 `true` 时额外写一份与 `AGENTS.md` 内容相同的 `CLAUDE.md` |
+| `mode` | `full` | `full` `diagrams` `domains` `surfaces` `data` `flows` `entrypoint` |
+| `domain` | 无 | 只框定一个业务域。值来自本仓库探测，不抄别的项目 |
+| `feature` | 无 | 拍板后才深挖这一个功能 |
+| `refresh` | `off` | `off` 不覆盖已有清单；`cited` 只核对行号并标过期；`force` 才整页重写 |
+| `system` | `auto` | 只改文档里的称谓 |
+| `dual_claude` | 否 | `true` 时再写一份同构的 `CLAUDE.md` |
 
-`mode=full` 会生成全景图和清单，**不会**自动深写某个功能。
+`mode=flows` 有 `domain`、没有 `feature` 时必须停下来等拍板，不能自己挑一个功能写完。
 
-## 产出
+## 写出什么
 
 ```text
 AGENTS.md
@@ -101,27 +56,18 @@ docs/agents/
   01-domains/INDEX.md
   02-surfaces/api-list.md
   02-surfaces/cli-and-consumers.md
-  03-deep-dives/data-model.md
-  03-deep-dives/critical-paths.md
-  03-deep-dives/layers.md
-  03-deep-dives/flows/
+  03-deep-dives/...
   diagrams/*.svg
+  diagrams/flows/{domain}/{slug}/flow.html
 ```
 
-业务划分、入口和依赖以**当前仓库里实际存在的路径**为准。文档用标题 + 表格，不加装饰，方便 Agent 解析。
+仓库里没有的层不建页。深挖一个功能只出一份 `flow.html`：打开只看主步骤，点 `+` 展开子流程。
 
-## 非目标
+## 边界
 
-- 本仓库只提供 skill 规则，不存放某个业务项目的文档成品
-- `codex-drift` 只报告问题，不会自动重跑 `codex-map`
-
-## 兼容
-
-| 环境 | 说明 |
-|---|---|
-| Cursor | 项目 skill 或用户 skill |
-| Claude Code | `.claude/skills/` |
-
-## 开发
-
-见 [CONTRIBUTING.md](CONTRIBUTING.md)。协议 [MIT](LICENSE)。版本见 [CHANGELOG.md](CHANGELOG.md)。
+- 只写 `docs/agents/**` 和 `AGENTS.md`。不改业务源码，不装依赖，不启动应用。
+- 接口表和模型表是扫描快照。`AGENTS.md`「先查哪里」写调用关系该去哪查。
+- 扫描「谁调用谁」时，会话里有 codebase-memory 就先查它。HTTP 方法、表名和行号仍以打开的源码为准。没有这个 MCP 就退回读文件，不中断。
+- 深挖页的步骤要带 `路径:行号`。没有行号的判断不能画成菱形。
+- 清单和全景图已经存在时，默认不整页重写。要重生就加 `refresh=force`。
+- 只读的文档漂移检查用 `codex-drift`，不是这个技能。

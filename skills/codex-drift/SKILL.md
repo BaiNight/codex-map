@@ -31,6 +31,7 @@ description: >
    - console / commands / consumer → `docs/agents/02-surfaces/cli-and-consumers.md`
    - models → `docs/agents/03-deep-dives/data-model.md`（以 Model 为准，忽略 migrations）
    - 核心链路起点 → `docs/agents/03-deep-dives/critical-paths.md`
+   - Compat / Legacy / 双写 / 开关 / deprecated → `docs/agents/03-deep-dives/risk-zones.md`、`docs/agents/03-deep-dives/forbidden-candidates.md`
    - service / handler / task / slice（及本仓库等价编排目录） → `docs/agents/03-deep-dives/flows/`、`layers.md`、`docs/agents/diagrams/flows/*.svg`
    - `*Status*` / `*State*` enums → `docs/agents/03-deep-dives/lifecycle.md`
    - strategy / adapter / chain / provider / plugin → `docs/agents/03-deep-dives/variants/`
